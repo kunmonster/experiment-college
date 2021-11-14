@@ -1,34 +1,30 @@
 #include<iostream>
 using namespace std;
-void quicksort(int * ,int ,int);
+void quicksort(int * arr ,int start,int endb);
 int main(){    
-    int  arr[10] = {6,3,7,2,9,1,8,4,5,10};
+    int arr[10] = {6,3,7,2,9,1,8,4,5,10};
     quicksort(arr,0,9);
-    for( int item : arr){
-        cout<<item<<endl;
-    }
     return 0;
 }
 void quicksort(int * arr,int start,int end){
-    if(!arr||(start == end)){
+    //exit
+    if(!arr || start >= end){
         exit(1);
+    }   
+    int base = *(arr+start);
+    int i = start;
+    int j = end;
+    while( j < j){
+    while(j > i && *(arr+j) > base){
+        j--;
     }
-    int start_num = start;
-    int end_num = end;
-    int base = arr[start_num];
-    for(int i=start_num;i<end_num;i++){
-        if(*(arr+i) > base){
-            for(int j=end_num;i<=j;j--){
-                if(*(arr+j) < base){
-                    int temp = arr[i];
-                    *(arr+i) = *(arr+j);
-                    *(arr+j) = temp;
-                    start_num++;
-                    end_num--;
-                    break;
-                }
-            }
-        }
+    *(arr+start) = *(arr+j);
+    while(i < j && *(arr+i) < base){
+        i++;
     }
-    quicksort(arr,start,end_num);
+    *(arr+j) = *(arr+i);
+    }
+    *(arr+i) = base;
+    quicksort(arr,start,i-1);
+    quicksort(arr,i+1,end);
 }
