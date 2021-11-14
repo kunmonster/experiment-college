@@ -4,6 +4,9 @@ void quicksort(int * arr ,int start,int endb);
 int main(){    
     int arr[10] = {6,3,7,2,9,1,8,4,5,10};
     quicksort(arr,0,9);
+    for(int item : arr){
+        std::cout<<item<<"\t";
+    }
     return 0;
 }
 void quicksort(int * arr,int start,int end){
