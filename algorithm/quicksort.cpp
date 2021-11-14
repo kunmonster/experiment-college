@@ -14,7 +14,7 @@ void quicksort(int * arr,int start,int end){
     int base = *(arr+start);
     int i = start;
     int j = end;
-    while( j < j){
+    while( i < j){
     while(j > i && *(arr+j) > base){
         j--;
     }
