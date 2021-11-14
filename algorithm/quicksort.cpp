@@ -4,24 +4,24 @@ void quicksort(int * arr ,int start,int endb);
 int main(){    
     int arr[10] = {6,3,7,2,9,1,8,4,5,10};
     quicksort(arr,0,9);
-    for(int item : arr){
-        std::cout<<item<<"\t";
+    for(int i = 0;i<10;i++){
+        std::cout<<arr[i]<<"\t";
     }
     return 0;
 }
 void quicksort(int * arr,int start,int end){
     //exit
     if(!arr || start >= end){
-        exit(1);
+        return ;
     }   
     int base = *(arr+start);
     int i = start;
     int j = end;
     while( i < j){
-    while(j > i && *(arr+j) > base){
+    while(i < j && *(arr+j) > base){
         j--;
     }
-    *(arr+start) = *(arr+j);
+    *(arr+i) = *(arr+j);
     while(i < j && *(arr+i) < base){
         i++;
     }
