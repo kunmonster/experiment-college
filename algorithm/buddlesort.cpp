@@ -21,13 +21,3 @@ void buddleSort(int* array, const int len) {
     }
   }
 }
-
-// int main(int argc, char** argv) {
-//   int array[] = {2, 9, 0, 7, 4};
-//   int len = sizeof(array) / sizeof(int);
-//   buddleSort(array, len);
-//   for (int i = 0; i < len; i++) {
-//     cout << array[i] << "\t";
-//   }
-//   return 0;
-// }

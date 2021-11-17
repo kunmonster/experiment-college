@@ -1,10 +1,14 @@
-#include <cstdlib>
-#include <ctime>
+#include <stdio.h>
+#include <time.h>
+#include <sys/time.h>
+#include <iomanip>
 #include <iostream>
 
 #include "MergeSort.cpp"
 #include "buddlesort.cpp"
 #include "quicksort.cpp"
+
+// #if define(LINUX)
 
 using namespace std;
 
@@ -12,13 +16,13 @@ void buddleSort(int* array, const int len);
 void Sort(int* arr, int* reg, int start, int end);
 void quicksort(int*, int, int);
 
-int* arraycp(int * origin, int len) {
+int* arraycp(int* origin, int len) {
   if (len) {
     int* res = new int[len];
     for (int i = 0; i < len; i++) {
-      *(res+i) = *(origin+i);
+      *(res + i) = *(origin + i);
     }
-     return res;
+    return res;
   }
   return NULL;
 }
@@ -32,6 +36,7 @@ int* generateArray(int num, int left, int right) {
 }
 
 int main() {
+  // system("chcp 65001");
   std::cout << "please input the size of the array:";
   int num = 0;
   std::cin >> num;
@@ -40,30 +45,62 @@ int main() {
   int right = 0;
   std::cout << "left:";
   cin >> left;
-  std::cout << endl << "right:";
+  std::cout << "right:";
   cin >> right;
   int* arr = generateArray(num, left, right);
-  int * arrcp1 = arraycp(arr,num);
-  int * arrcp2 = arraycp(arr,num);
-  int * reg = new int[num];
-  clock_t start, end;
-  double buddle_time, merge_time, quick_time;
-  start = clock();
-  buddleSort(arr, num);
-  end = clock();
-  buddle_time = (double)(end - start) / CLOCKS_PER_SEC;
-
-  start = clock();
-  quicksort(arrcp1,0,num-1);
-  end = clock();
-  quick_time = (double)(end-start) / CLOCKS_PER_SEC;
-    
-  start = clock();
-  Sort(arrcp2,reg,0,num-1);
-  end = clock();
-  merge_time = (double)(end-start) / CLOCKS_PER_SEC;
+  int* arrcp1 = arraycp(arr, num);
+  int* arrcp2 = arraycp(arr, num);
+  int* reg = new int[num];
+  struct timeval start,end;
   
-  cout <<"冒泡:"<<buddle_time<<endl<<"快排:"<<quick_time<<endl<<"归并:"<<merge_time<<endl;
+  // QueryPerformanceFrequency(&tc);
+  // clock_t start, end;
+  double buddle_time, merge_time, quick_time;
+  // start = clock();
+  // QueryPerformanceCounter(&t1);
+  gettimeofday(&start,NULL);
+  buddleSort(arr, num);
+  // QueryPerformanceCounter(&t2);
+  // end = clock();
+  // buddle_time = (double)(end - start) / CLOCKS_PER_SEC;
+  gettimeofday(&end,NULL);
+
+  buddle_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+
+  // QueryPerformanceFrequency(&tc);
+
+  // start = clock();
+  // QueryPerformanceCounter(&t1);
+  gettimeofday(&start,NULL);
+
+  quicksort(arrcp1, 0, num - 1);
+  // end = clock();
+  // QueryPerformanceCounter(&t2);
+  gettimeofday(&end,NULL);
+
+  // quick_time = (t2.QuadPart - t1.QuadPart) * 1.0 / tc.QuadPart;
+  quick_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+
+  // QueryPerformanceFrequency(&tc);
+
+  // start = clock();
+  // QueryPerformanceCounter(&t1);
+  gettimeofday(&start,NULL);
+
+  Sort(arrcp2, reg, 0, num - 1);
+  // end = clock();
+  // QueryPerformanceCounter(&t2);
+  gettimeofday(&end,NULL);
+
+
+  // merge_time = (double)(end - start) / CLOCKS_PER_SEC;
+  // merge_time = (t2.QuadPart - t1.QuadPart) * 1.0 / tc.QuadPart;
+  merge_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+
+
+  cout << "冒泡:" <<setprecision(15)<< buddle_time << "秒" << endl
+       << "快排:" << setprecision(15) << quick_time << "秒" << endl
+       << "归并:" << setprecision(15) << merge_time << "秒" << endl;
   system("pause");
   return 0;
 }
