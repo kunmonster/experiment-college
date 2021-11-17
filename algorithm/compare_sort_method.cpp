@@ -37,6 +37,7 @@ int* generateArray(int num, int left, int right) {
 
 int main() {
   // system("chcp 65001");
+  system("clear");
   std::cout << "please input the size of the array:";
   int num = 0;
   std::cin >> num;
