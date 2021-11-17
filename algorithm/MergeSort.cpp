@@ -32,14 +32,14 @@ void Sort(int * arr,int * reg,int start,int end){
   }
 }
 
-int main(){
-  int arr[6] = {5,8,4,6,3,9};
-  int * reg = new int[6];
-  Sort(arr,reg,0,5);
-  int i = 0;
-  while(i<=5){
-    cout<<*(reg+i);
-    i++;
-  }
-  return 0;
-}
+// int main(){
+//   int arr[6] = {5,8,4,6,3,9};
+//   int * reg = new int[6];
+//   Sort(arr,reg,0,5);
+//   int i = 0;
+//   while(i<=5){
+//     cout<<*(reg+i);
+//     i++;
+//   }
+//   return 0;
+// }
