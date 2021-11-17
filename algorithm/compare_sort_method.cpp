@@ -65,7 +65,7 @@ int main() {
   // buddle_time = (double)(end - start) / CLOCKS_PER_SEC;
   gettimeofday(&end,NULL);
 
-  buddle_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+  buddle_time = (end.tv_sec-start.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
 
   // QueryPerformanceFrequency(&tc);
 
@@ -79,7 +79,7 @@ int main() {
   gettimeofday(&end,NULL);
 
   // quick_time = (t2.QuadPart - t1.QuadPart) * 1.0 / tc.QuadPart;
-  quick_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+  quick_time = (end.tv_sec-start.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
 
   // QueryPerformanceFrequency(&tc);
 
@@ -95,12 +95,11 @@ int main() {
 
   // merge_time = (double)(end - start) / CLOCKS_PER_SEC;
   // merge_time = (t2.QuadPart - t1.QuadPart) * 1.0 / tc.QuadPart;
-  merge_time = (end.tv_sec-end.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
+  merge_time = (end.tv_sec-start.tv_sec)+(end.tv_usec - start.tv_usec) / 1000000.0;
 
 
-  cout << "冒泡:" <<setprecision(15)<< buddle_time << "秒" << endl
+  cout << "冒泡:" << buddle_time << "秒" << endl
        << "快排:" << setprecision(15) << quick_time << "秒" << endl
        << "归并:" << setprecision(15) << merge_time << "秒" << endl;
-  system("pause");
   return 0;
 }
