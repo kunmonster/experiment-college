@@ -1,8 +1,10 @@
 #include <math.h>
 #include <string.h>
-#include<ctime>
+
+#include <ctime>
+#include <iomanip>
 #include <iostream>
-#include<iomanip>
+
 using namespace std;
 
 #define INFINITE 1e20
@@ -18,33 +20,32 @@ typedef struct _POINT_ {
 int middle_point[MAX_SIZE] = {0};
 
 bool comp_x(point, point);
-bool comp_y(point,point);
+bool comp_y(point, point);
 void sort_point_array(point *, int, int);
 double dis(point, point);
-double get_closest_dis(point *, int,int);
-point * generate_points(int num);
+double get_closest_dis(point *, int, int);
+point *generate_points(int num);
 
-int main() { 
+int main() {
   system("chcp 65001");
   system("clear");
-  cout<<"请输入生成点的个数:";
-  int num=0;
-  cin>>num;
-  point * point_arr = generate_points(num);
-  sort_point_array(point_arr,num,0);
-  double a = get_closest_dis(point_arr,0,num-1);
-  std::cout<<setprecision(8)<<a<<endl;
+  cout << "请输入生成点的个数:";
+  int num = 0;
+  cin >> num;
+  point *point_arr = generate_points(num);
+  sort_point_array(point_arr, num, 0);
+  double a = get_closest_dis(point_arr, 0, num - 1);
+  std::cout << setprecision(8) << a << endl;
   system("pause");
-  return 0; }
+  return 0;
+}
 
 bool comp_x(point p1, point p2) {
   //比较p1 < p2
   return p1.x <= p2.x ? true : false;
 }
 
-bool comp_y(point p1,point p2){
-  return p1.y<=p2.y ? true : false;
-}
+bool comp_y(point p1, point p2) { return p1.y <= p2.y ? true : false; }
 
 void sort_point_array(point *point_array, int len, int mode) {
   //对所有点以x坐标为基准从小到大排序
@@ -62,8 +63,7 @@ void sort_point_array(point *point_array, int len, int mode) {
           *(point_array + j) = *(point_array + j + 1);
           *(point_array + j + 1) = temp;
         }
-      }
-      else{
+      } else {
         if (!comp_y(*(point_array + j), *(point_array + j + 1))) {
           flag = 1;
           temp = *(point_array + j);
@@ -107,7 +107,7 @@ double get_closest_dis(point *point_array, int left, int right) {
     }
   }
   //按纵坐标升序排列
-  sort_point_array(point_array,right-right+1,1);
+  sort_point_array(point_array, right - right + 1, 1);
   //这里可以不用加绝对值
   for (i = 0; i < k; i++) {
     for (j = i + 1; j < k && fabs((*(point_array + middle_point[j])).y -
@@ -120,19 +120,20 @@ double get_closest_dis(point *point_array, int left, int right) {
   }
   return min;
 }
-point * generate_points(int num){
-  if(num){
-    point * point_array = new point[num];
-     srand(time(0));
-    for(int i=0;i<num;i++){
+point *generate_points(int num) {
+  if (num) {
+    point *point_array = new point[num];
+    srand(time(0));
+    for (int i = 0; i < num; i++) {
       //设置种子
-      (*(point_array+i)).x = (double)(rand()) / RAND_MAX;
-      (*(point_array+i)).y = (double)(rand()) / RAND_MAX;
+      (*(point_array + i)).x = (double)(rand()) / RAND_MAX;
+      (*(point_array + i)).y = (double)(rand()) / RAND_MAX;
     }
-    cout<<"所有点对"<<endl;
-    for(int j = 0;j<num;j++){
+    cout << "所有点对" << endl;
+    for (int j = 0; j < num; j++) {
       //所有点对
-      cout<<"("<<(*(point_array+j)).x<<","<<(*(point_array+j)).y<<")"<<endl;
+      cout << "(" << (*(point_array + j)).x << "," << (*(point_array + j)).y
+           << ")" << endl;
     }
     return point_array;
   }

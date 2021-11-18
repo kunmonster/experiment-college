@@ -11,13 +11,16 @@ void buddleSort(int* array, const int len) {
   if (len == 0) {
     return;
   }
-  for (int i = 0; i < len - 1; i++) {
-    for (int j = 0; j < len - 1 - i; j++) {
+  int i,j,flag=0;
+  for (i = 0; i < len - 1; i++) {
+    for ( j = 0; j < len - 1 - i; j++) {
       if (*(array + j) > *(array + j + 1)) {
+        flag=1;
         int temp = *(array + j + 1);
         *(array + j + 1) = *(array + j);
         *(array + j) = temp;
       }
     }
+    if(!flag) break;
   }
 }
