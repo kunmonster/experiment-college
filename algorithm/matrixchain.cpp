@@ -8,24 +8,28 @@
 
 using namespace std;
 
+
+void matrix_mutiplie_iteraion(int * , int ** ,int **,int );
+void track_brackets(int , int , int **);
+
+int main(){
+    int  arr[] ={30,35,15,5,10,20,25};
+    int ** min = new int * [7];
+    int ** s = new int * [7];
+    for(int i=0;i<7;i++){
+        min[i] = new int[7];
+        s[i] = new int[7];
+    }
+    matrix_mutiplie_iteraion(arr,min,s,7);
+    track_brackets(1,6,s);
+    system("pause");
+    return 0;
+}
+
 /*
 *迭代方式计算矩阵连乘法
 *paramter: 矩阵数组，最少乘法次数存放，断开点,数组长度
 */
-void matrix_mutiplie_iteraion(int * , int ** ,int **,int );
-
-
-int main(){
-    int  arr[] ={1,3,4,2,6};
-    int ** min = new int * [5];
-    int ** s = new int * [5];
-    for(int i=0;i<5;i++){
-        min[i] = new int[5];
-        s[i] = new int[5];
-    }
-    matrix_mutiplie_iteraion(arr,min,s,5);
-    return 0;
-}
 void matrix_mutiplie_iteraion(int * matrix_arr,int ** min,int ** s,int len){
     if(!matrix_arr)
     return;
@@ -50,6 +54,11 @@ void matrix_mutiplie_iteraion(int * matrix_arr,int ** min,int ** s,int len){
             cout<<"["<<i<<":"<<j<<"]"<<"  "<<min[i][j]<<endl;
         }
     }
-    
-
+}
+void track_brackets(int left,int right,int ** s){
+      if(left == right) return;
+      track_brackets(left,s[left][right],s);
+      track_brackets(s[left][right]+1,right,s);
+      cout<<"multipl A"<<left<<","<<s[left][right];
+      cout<<" and A"<<(s[left][right]+1)<<","<<right<<endl;
 }
