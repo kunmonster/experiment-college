@@ -16,6 +16,14 @@ void matrix_mutiplie_iteraion(int * , int ** ,int **,int );
 
 
 int main(){
+    int  arr[] ={1,3,4,2,6};
+    int ** min = new int * [5];
+    int ** s = new int * [5];
+    for(int i=0;i<5;i++){
+        min[i] = new int[5];
+        s[i] = new int[5];
+    }
+    matrix_mutiplie_iteraion(arr,min,s,5);
     return 0;
 }
 void matrix_mutiplie_iteraion(int * matrix_arr,int ** min,int ** s,int len){
@@ -39,7 +47,9 @@ void matrix_mutiplie_iteraion(int * matrix_arr,int ** min,int ** s,int len){
                     s[i][j] = k;
                 }
             }
+            cout<<"["<<i<<":"<<j<<"]"<<"  "<<min[i][j]<<endl;
         }
     }
+    
 
 }
