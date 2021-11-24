@@ -24,12 +24,12 @@ int main() {
   cin >> b_len;
   char *B = generate_str(b_len);
   int i;
-    cout << "A序列为:";
-  for ( i = 0; i < a_len; i++) {
+  cout << "A序列为:";
+  for (i = 0; i < a_len; i++) {
     cout << A[i] << " ";
   }
-  cout<<endl<< "B序列为:";
-  for ( i = 0; i < b_len; i++) {
+  cout << endl << "B序列为:";
+  for (i = 0; i < b_len; i++) {
     cout << B[i] << " ";
   }
   int **c = new int *[a_len + 1];
@@ -43,7 +43,7 @@ int main() {
   lcs_length(a_len, b_len, A, B, c, pos);
   char *res = new char[c[a_len][b_len]];
   getSubSeq(a_len, b_len, A, res, c, pos);
-cout<<endl<<"最长公共子序列为:";
+  cout << endl << "最长公共子序列为:";
   for (i = 0; i < c[a_len][b_len]; i++) {
     cout << res[i] << " ";
   }
