@@ -6,8 +6,8 @@
 #include <iostream>
 using namespace std;
 
-void lcs_length(char *, char *, int **, int **, int, int);
-void getSubSeq(int **, int **, char *, char *, const int, const int);
+void lcs_length(const int,const int,char *, char *, int **, int **);
+void getSubSeq(const int, const int,char *, char *,int **, int **);
 
 int main() {
   char a[] = {'0', 'A', 'B', 'C', 'B', 'D', 'A', 'B'};
@@ -16,13 +16,13 @@ int main() {
   for (int i = 0; i < 8; i++) {
     c[i] = new int[7];
   }
-  int **pos = new int *[8];
-  for (int i = 0; i < 8; i++) {
-    pos[i] = new int[7];
+  int **pos = new int *[7];
+  for (int i = 0; i < 7; i++) {
+    pos[i] = new int[6];
   }
-  lcs_length(a, b, c, pos, 7, 6);
+  lcs_length(7, 6,a, b, c, pos );
   char *res = new char[c[7][6]];
-  getSubSeq(c, pos, a, res, 7, 6);
+  getSubSeq(7, 6, a, res, c, pos);
   for (int i = 0; i < c[7][6]; i++) {
     cout << res[i] << " ";
   }
@@ -34,7 +34,7 @@ int main() {
  * paramters : sequence A , sequence B , longest length arr , position , length
  * of a, lenght of b
  */
-void lcs_length(char *a, char *b, int **c, int **pos, int len_a, int len_b) {
+void lcs_length(int len_a, int len_b,char *a, char *b, int **c, int **pos) {
   if (!a && !b) {
     return;
   }
@@ -60,16 +60,19 @@ void lcs_length(char *a, char *b, int **c, int **pos, int len_a, int len_b) {
     }
   }
 }
-void getSubSeq(int **c, int **pos, char *a, char *res, int len_a, int len_b) {
+/**
+*paramters : length of seq_a , length of seq_b , seq_a , sub_seq , cloeset length arr , postion
+*/
+void getSubSeq(int len_a, int len_b, char *a, char *res,int **c, int **pos) {
   if (len_a == 0 || len_b == 0) return;
   if (c[len_a][len_b]) {
     if (pos[len_a - 1][len_b - 1] == 1) {
-      res[c[len_a][len_b] - 1] = a[len_a - 1];
-      getSubSeq(c, pos, a, res, len_a - 1, len_b - 1);
+      res[c[len_a][len_b] - 1] = a[len_a];
+      getSubSeq(len_a - 1, len_b - 1, a, res,c, pos );
     } else if (pos[len_a - 1][len_b - 1] == 2) {
-      getSubSeq(c, pos, a, res, len_a - 1, len_b);
+      getSubSeq( len_a - 1, len_b, a, res,c, pos);
     } else {
-      getSubSeq(c, pos, a, res, len_a, len_b - 1);
+      getSubSeq(len_a, len_b - 1, a, res,c, pos );
     }
   }
 }
