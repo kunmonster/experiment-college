@@ -39,7 +39,7 @@ void matrix_mutiplie_iteraion(int * matrix_arr,int ** min,int ** s,int len){
         min[i][i]=0;
     }
     for(r=2;r<len;r++){
-        //从长度为啥开始求两个矩阵间最少乘法次数
+        //从长度为2开始求两个矩阵间最少乘法次数
         for(i=1;i<len-r+1;i++){
             j=i+r-1;    //i--j
             min[i][j] = min[i+1][j]+matrix_arr[i-1] * matrix_arr[i] * matrix_arr[j];
