@@ -14,7 +14,7 @@ void getSubSeq(const int, const int, char *, char *, int **, int **);
 char *generate_str(int);
 
 int main() {
-  system("chcp 65001");
+  system("clear");
   cout << "输入序列a的长度:";
   int a_len;
   cin >> a_len;
@@ -47,7 +47,7 @@ int main() {
   for (i = 0; i < c[a_len][b_len]; i++) {
     cout << res[i] << " ";
   }
-  system("pause");
+  cout<<endl;
   return 0;
 }
 

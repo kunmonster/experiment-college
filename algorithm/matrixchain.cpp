@@ -15,7 +15,7 @@ void matrix_mutiplie_iteraion(int *, int **, int **, int);
 void track_brackets(int, int, int **);
 
 int main() {
-  system("chcp 65001");
+  system("clear");
   cout << "请输入矩阵个数:";
   int num = 0;
   cin >> num;
@@ -35,7 +35,7 @@ int main() {
     cout << "A" << i << ":[" << arr[i - 1] << "X" << arr[i] << "]" << endl;
   }
   track_brackets(1, num, s);
-  system("pause");
+  cout<<endl;
   return 0;
 }
 
