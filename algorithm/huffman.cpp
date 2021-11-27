@@ -47,6 +47,7 @@ struct cmp {
 
 struct Bit {
   unsigned value : 1;
+  
   Bit(int value) : value(value) {}
 };
 
