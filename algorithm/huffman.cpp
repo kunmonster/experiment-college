@@ -10,30 +10,33 @@
 #include <iostream>
 #include <map>
 #include <queue>
+#include <stack>
 #include <vector>
 
 using namespace std;
 
+#define Zero 257
+
 class node {
  private:
-  char data;
+  int data;
   unsigned int num;
   node *left;
   node *right;
 
  public:
-  node(const char data, const unsigned int num) {
+  node(const int data, const unsigned int num) {
     this->data = data;
     this->num = num;
   }
-  node(const char data, const unsigned int num, node *left, node *right) {
+  node(const int data, const unsigned int num, node *left, node *right) {
     this->data = data;
     this->num = num;
     this->left = left;
     this->right = right;
   }
-  unsigned int getWeight() { return this->num; }
-  char getData() { return this->data; }
+  int getWeight() { return this->num; }
+  unsigned int getData() { return this->data; }
   node *getLeft() { return left; }
   node *getRight() { return right; }
 };
@@ -45,10 +48,9 @@ struct cmp {
   }
 };
 
-
 //
 typedef vector<char> code;
-typedef map<char, vector<char>> code_Map;
+typedef map<unsigned int, vector<char>> code_Map;
 typedef priority_queue<node *, vector<node *>, cmp> pri_queue;
 
 //
@@ -58,6 +60,7 @@ void get_huffman_code(vector<char>, node *root, code_Map *);
 int *getfile(const char *filePath);
 void encode(const code_Map, const char *);
 void decode(char *, node *);
+void getfilestream(char *);
 
 int main() {
   cout << "输入文件名:" << endl;
@@ -71,6 +74,11 @@ int main() {
   vector<char> code;
   get_huffman_code(code, root, &code_map);
   encode(code_map, path.c_str());
+  char new_path[256];
+  strcpy(new_path, path.c_str());
+  strcat(new_path, ".huffman");
+  getfilestream(new_path);
+  // decode(new_path, root);
   return 0;
 }
 
@@ -80,7 +88,12 @@ int main() {
 void init_queue(const int *arr, pri_queue *queue) {
   for (int i = 0; i < 256; i++) {
     if (arr[i] != 0) {
-      node *temp_node = new node((char)i, arr[i], NULL, NULL);
+      node *temp_node;
+      if (i == 0) {
+        temp_node = new node(Zero, arr[0], NULL, NULL);
+      } else {
+        temp_node = new node(i, arr[i], NULL, NULL);
+      }
       queue->push(temp_node);
     }
   }
@@ -105,14 +118,13 @@ node *create_huffman_tree(pri_queue *queue) {
 /**
  *根据哈夫曼树得到每个字符对应的编码,用map存放
  **/
-void get_huffman_code(vector<char> code, node *root,
-                      code_Map *code_map) {
+void get_huffman_code(vector<char> code, node *root, code_Map *code_map) {
   if (!root) {
     return;
   }
   if (root->getData() != 0) {
     //叶子节点
-    code_map->insert(std::pair<char,vector<char>>(root->getData(),code));
+    code_map->insert(std::pair<int, vector<char>>(root->getData(), code));
     return;
   }
   code.push_back(0);
@@ -148,31 +160,37 @@ void encode(const code_Map code_map, const char *path) {
     exit(1);
   }
   char c;
-  string res;
+  vector<unsigned char> res;
+  char temp;
+  int j = 1;
   while ((c = inFile.get()) != EOF) {
-    cout << c;
-    vector<char> str = code_map.at(c);
-    char temp;
-    int j=0;
+    vector<char> str;
+    if (c == 0) {
+      str = code_map.at(Zero);
+    } else if (c < 0) {
+      int index = (int)c + 256;
+      str = code_map.at(index);
+    } else {
+      str = code_map.at((int)c);
+    }
     for (int i = 0; i < str.size(); i++) {
-      if(j<7){
-      if(str[i] == 1){
-        temp |= 0x1;
-        temp << 1;
-        }
-      else{
-        temp<<1;
+      if ((j) % 8) {
+        if (str[i] == 1) {
+          temp |= 0x1;
+          temp <<= 1;
+        } else {
+          temp <<= 1;
         }
         j++;
-      }
-      else{
+      } else {
         //超过8位了
-        if(str[i] == 1){
-  temp |= 0x1;
-  }
-      res.push_back(temp);
+        if (str[i] == 1) {
+          temp |= 0x1;
+        }
+        unsigned char sign_code = temp;
+        res.push_back(sign_code);
         temp &= 0x0;
-        j=0;
+        j = 1;
       }
     }
   }
@@ -182,9 +200,59 @@ void encode(const code_Map code_map, const char *path) {
   char new_path[256];
   strcpy(new_path, path);
   strcat(new_path, ".huffman");
+  outFile.open(new_path, ios::binary);
+  for (int i = 0; i < res.size(); i++) {
+    outFile.write((char *) &res[i],sizeof(res[i]));
+  }
+  // outFile << EOF;
 
-  outFile.open(new_path, ios::out);
+}
 
-  outFile.write(res.c_str(), res.size());
-  outFile.close();
+void getfilestream(char *filepath) {
+  fstream inFile(filepath, ios::app |ios::in | ios::binary);
+  if (!inFile) return;
+  // inFile.seekg(0, ios::end);
+  // int size = inFile.tellg();
+  unsigned char *str = new unsigned char[5400]{0};
+  // unsigned char str[128];
+  stack<unsigned char> temp_stack;
+  int i = 0;
+  // node *root;
+  int num = 1;
+  unsigned char c;
+  inFile.read((char *)(str),5400);
+  // cout<<(int)c<<endl;
+  inFile.read((char *)(str),5400);
+  cout<<(int)c<<endl;
+  while ((c=inFile.get()) != EOF) {
+    int j = 0;
+    for (j; j < 8; j++) {
+      temp_stack.push((c >> j) & 1);
+    }
+    while (!temp_stack.empty() && i < 5400) {
+      str[i] = temp_stack.top();
+      temp_stack.pop();
+      i++;
+    }
+  }
+}
+
+void decode(stack<unsigned char> str, node *root, string *res) {
+  if (!root || str.empty()) return;
+
+  if (root->getData() != 0) {
+    if (root->getData() == 257)
+      res->push_back(0);
+    else
+      res->push_back(root->getData());
+    return;
+  }
+
+  if (str.top() == 0) {
+    str.pop();
+    decode(str, root->getLeft(), res);
+  } else {
+    str.pop();
+    decode(str, root->getRight(), res);
+  }
 }
