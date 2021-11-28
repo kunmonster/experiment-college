@@ -45,20 +45,16 @@ struct cmp {
   }
 };
 
-struct Bit {
-  unsigned value : 1;
-  
-  Bit(int value) : value(value) {}
-};
 
 //
-typedef map<char, vector<struct Bit>> code_Map;
+typedef vector<char> code;
+typedef map<char, vector<char>> code_Map;
 typedef priority_queue<node *, vector<node *>, cmp> pri_queue;
 
 //
 void init_queue(const int *, pri_queue *);
 node *create_huffman_tree(pri_queue *);
-void get_huffman_code(vector<Bit>, node *root, code_Map *);
+void get_huffman_code(vector<char>, node *root, code_Map *);
 int *getfile(const char *filePath);
 void encode(const code_Map, const char *);
 void decode(char *, node *);
@@ -72,7 +68,7 @@ int main() {
   init_queue(arr, &queue);
   node *root = create_huffman_tree(&queue);
   code_Map code_map;
-  vector<Bit> code;
+  vector<char> code;
   get_huffman_code(code, root, &code_map);
   encode(code_map, path.c_str());
   return 0;
@@ -109,20 +105,20 @@ node *create_huffman_tree(pri_queue *queue) {
 /**
  *根据哈夫曼树得到每个字符对应的编码,用map存放
  **/
-void get_huffman_code(vector<Bit> code, node *root,
+void get_huffman_code(vector<char> code, node *root,
                       code_Map *code_map) {
   if (!root) {
     return;
   }
   if (root->getData() != 0) {
     //叶子节点
-    code_map->insert(std::pair<char,vector<Bit>>(root->getData(),code));
+    code_map->insert(std::pair<char,vector<char>>(root->getData(),code));
     return;
   }
-  code.push_back(Bit(0));
+  code.push_back(0);
   get_huffman_code(code, root->getLeft(), code_map);
   code.pop_back();
-  code.push_back(Bit(1));
+  code.push_back(1);
   get_huffman_code(code, root->getRight(), code_map);
 }
 
@@ -143,7 +139,6 @@ int *getfile(const char *filePath) {
   return weight;
 }
 void encode(const code_Map code_map, const char *path) {
-  string res;
   ifstream inFile;
   ofstream outFile;
   inFile.open(path, ios::binary);
@@ -153,11 +148,32 @@ void encode(const code_Map code_map, const char *path) {
     exit(1);
   }
   char c;
+  string res;
   while ((c = inFile.get()) != EOF) {
     cout << c;
-    vector<Bit> str = code_map.at(c);
+    vector<char> str = code_map.at(c);
+    char temp;
+    int j=0;
     for (int i = 0; i < str.size(); i++) {
-      res.push_back(str[i].value);
+      if(j<7){
+      if(str[i] == 1){
+        temp |= 0x1;
+        temp << 1;
+        }
+      else{
+        temp<<1;
+        }
+        j++;
+      }
+      else{
+        //超过8位了
+        if(str[i] == 1){
+  temp |= 0x1;
+  }
+      res.push_back(temp);
+        temp &= 0x0;
+        j=0;
+      }
     }
   }
 
