@@ -3,6 +3,7 @@
  *huffman base heap
  *2021/11/25
  */
+
 #include <string.h>
 
 #include <fstream>
@@ -60,7 +61,9 @@ void get_huffman_code(vector<char>, node *root, code_Map *);
 int *getfile(const char *filePath);
 void encode(const code_Map, const char *);
 void decode(char *, node *);
-void getfilestream(char *);
+void getfilestream(char *,node *);
+void decode_1(int,unsigned char * , node *,vector<char> *);
+
 
 int main() {
   cout << "输入文件名:" << endl;
@@ -77,7 +80,7 @@ int main() {
   char new_path[256];
   strcpy(new_path, path.c_str());
   strcat(new_path, ".huffman");
-  getfilestream(new_path);
+  getfilestream(new_path,root);
   // decode(new_path, root);
   return 0;
 }
@@ -202,42 +205,43 @@ void encode(const code_Map code_map, const char *path) {
   strcat(new_path, ".huffman");
   outFile.open(new_path, ios::binary);
   for (int i = 0; i < res.size(); i++) {
-    outFile.write((char *) &res[i],sizeof(res[i]));
+    outFile.write((char *)&res[i], sizeof(res[i]));
   }
   // outFile << EOF;
-
 }
 
-void getfilestream(char *filepath) {
-  fstream inFile(filepath, ios::app |ios::in | ios::binary);
+void getfilestream(char *filepath, node *root) {
+  fstream inFile(filepath, ios::app | ios::in | ios::binary);
   if (!inFile) return;
-  // inFile.seekg(0, ios::end);
-  // int size = inFile.tellg();
-  unsigned char *str = new unsigned char[5400]{0};
-  // unsigned char str[128];
+
+  inFile.seekg(0, ios::end);
+  int size = inFile.tellg();
+  inFile.seekg(0, ios::beg);
+  unsigned char *str = new unsigned char[size]{0};
+  // vector<unsigned char> deal(8 * size);
   stack<unsigned char> temp_stack;
   int i = 0;
-  // node *root;
   int num = 1;
-  unsigned char c;
-  inFile.read((char *)(str),5400);
-  // cout<<(int)c<<endl;
-  inFile.read((char *)(str),5400);
-  cout<<(int)c<<endl;
-  while ((c=inFile.get()) != EOF) {
-    int j = 0;
-    for (j; j < 8; j++) {
-      temp_stack.push((c >> j) & 1);
+  inFile.read((char *)(str), size);
+  unsigned char *deal = new unsigned char[8 * size]{0};
+  for (int j = 0; j < size; j++) {
+    int m = 0;
+    for (m; m < 8; m++) {
+      temp_stack.push((str[j] >> m) & 1);
     }
-    while (!temp_stack.empty() && i < 5400) {
-      str[i] = temp_stack.top();
+    m = 0;
+    while (!temp_stack.empty() && m < 8) {
+      deal[j * 8 + m] = temp_stack.top();
       temp_stack.pop();
-      i++;
+      m++;
     }
   }
+  // for (int n = 0; n < 8 * size; n++) cout << (int)deal[n];
+  vector<char> *ss;
+  decode_1(8 * size,deal,root,ss);
 }
 
-void decode(stack<unsigned char> str, node *root, string *res) {
+void decode(vector<unsigned char> str, node *root, string *res) {
   if (!root || str.empty()) return;
 
   if (root->getData() != 0) {
@@ -248,11 +252,33 @@ void decode(stack<unsigned char> str, node *root, string *res) {
     return;
   }
 
-  if (str.top() == 0) {
-    str.pop();
+  if (str.back() == 0) {
+    str.pop_back();
     decode(str, root->getLeft(), res);
   } else {
-    str.pop();
+    str.pop_back();
     decode(str, root->getRight(), res);
+  }
+}
+void decode_1(int len, unsigned char *str, node *root,vector<char> * res) {
+  if (len == 0) return;
+  int i = 0;
+  node *temp = root;
+  while (i < len && temp) {
+    if (temp->getData() != 0) {
+      if (temp->getData() == 257) {
+        res->push_back(0);
+      } else
+        res->push_back((char)root->getData());
+    }
+    if (root->getData() == 0) {
+      if (str[i] == 0) {
+        temp = temp->getLeft();
+      } else {
+        temp = temp->getRight();
+      }
+    }
+    if (!temp) temp = root;
+    i++;
   }
 }
