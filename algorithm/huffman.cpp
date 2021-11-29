@@ -16,30 +16,31 @@
 
 using namespace std;
 
-#define Zero 257
+#define Zero 255
 
 class node {
  private:
-  int data;
+  unsigned char data;
   unsigned int num;
   node *left;
   node *right;
 
  public:
-  node(const int data, const unsigned int num) {
+  node(const unsigned char data, const unsigned int num) {
     this->data = data;
     this->num = num;
   }
-  node(const int data, const unsigned int num, node *left, node *right) {
+  node(const unsigned char data, const unsigned int num, node *left,
+       node *right) {
     this->data = data;
     this->num = num;
     this->left = left;
     this->right = right;
   }
   int getWeight() { return this->num; }
-  unsigned int getData() { return this->data; }
-  node *getLeft() { return left; }
-  node *getRight() { return right; }
+  unsigned char getData() { return this->data; }
+  node *getLeft() { return this->left; }
+  node *getRight() { return this->right; }
 };
 
 //
@@ -51,44 +52,30 @@ struct cmp {
 
 //
 typedef vector<char> code;
-typedef map<unsigned int, vector<char>> code_Map;
+typedef map<unsigned char, vector<char>> code_Map;
 typedef priority_queue<node *, vector<node *>, cmp> pri_queue;
 
 //
-void init_queue(const int *, pri_queue *);
+void init_queue(int *, pri_queue *);
 node *create_huffman_tree(pri_queue *);
 void get_huffman_code(vector<char>, node *root, code_Map *);
 int *getfile(const char *filePath);
 void encode(const code_Map, const char *);
 void decode(char *, node *);
-void getfilestream(char *,node *);
-void decode_1(int,unsigned char * , node *,vector<char> *);
+unsigned char *getfilestream(const char *);
+void decode_1(int, unsigned char *, node *, const char *);
+void menu();
 
-
+int all_size = 0;
 int main() {
-  cout << "输入文件名:" << endl;
-  string path;
-  cin >> path;
-  int *arr = getfile(path.c_str());
-  pri_queue queue;
-  init_queue(arr, &queue);
-  node *root = create_huffman_tree(&queue);
-  code_Map code_map;
-  vector<char> code;
-  get_huffman_code(code, root, &code_map);
-  encode(code_map, path.c_str());
-  char new_path[256];
-  strcpy(new_path, path.c_str());
-  strcat(new_path, ".huffman");
-  getfilestream(new_path,root);
-  // decode(new_path, root);
+  menu();
   return 0;
 }
 
 /**
  * 根据出现频率构建最小堆优先队列
  */
-void init_queue(const int *arr, pri_queue *queue) {
+void init_queue(int *arr, pri_queue *queue) {
   for (int i = 0; i < 256; i++) {
     if (arr[i] != 0) {
       node *temp_node;
@@ -146,8 +133,8 @@ int *getfile(const char *filePath) {
     exit(1);
   }
   int *weight = new int[256]{0};
-  int temp;
-  while ((temp = inFile.get()) != EOF) {
+  unsigned char temp;
+  while (inFile.read((char *)&temp, sizeof(temp))) {
     weight[temp]++;
   }
   inFile.close();
@@ -207,22 +194,24 @@ void encode(const code_Map code_map, const char *path) {
   for (int i = 0; i < res.size(); i++) {
     outFile.write((char *)&res[i], sizeof(res[i]));
   }
-  // outFile << EOF;
 }
 
-void getfilestream(char *filepath, node *root) {
+/**
+ * 从压缩文件中读取数据
+ */
+unsigned char *getfilestream(const char *filepath) {
   fstream inFile(filepath, ios::app | ios::in | ios::binary);
-  if (!inFile) return;
+  if (!inFile) return NULL;
 
   inFile.seekg(0, ios::end);
   int size = inFile.tellg();
   inFile.seekg(0, ios::beg);
   unsigned char *str = new unsigned char[size]{0};
-  // vector<unsigned char> deal(8 * size);
   stack<unsigned char> temp_stack;
   int i = 0;
   int num = 1;
   inFile.read((char *)(str), size);
+  inFile.close();
   unsigned char *deal = new unsigned char[8 * size]{0};
   for (int j = 0; j < size; j++) {
     int m = 0;
@@ -236,49 +225,118 @@ void getfilestream(char *filepath, node *root) {
       m++;
     }
   }
-  // for (int n = 0; n < 8 * size; n++) cout << (int)deal[n];
-  vector<char> *ss;
-  decode_1(8 * size,deal,root,ss);
+  ::all_size = 8 * size;
+  return deal;
 }
 
-void decode(vector<unsigned char> str, node *root, string *res) {
-  if (!root || str.empty()) return;
+/**
+ *解码递归版本,参数原因弃用
+ **/
+// void decode(vector<unsigned char> str, node *root, string *res) {
+//   if (!root || str.empty()) return;
 
-  if (root->getData() != 0) {
-    if (root->getData() == 257)
-      res->push_back(0);
-    else
-      res->push_back(root->getData());
-    return;
-  }
+//   if (root->getData() != 0) {
+//     if (root->getData() == 257)
+//       res->push_back(0);
+//     else
+//       res->push_back(root->getData());
+//     return;
+//   }
 
-  if (str.back() == 0) {
-    str.pop_back();
-    decode(str, root->getLeft(), res);
-  } else {
-    str.pop_back();
-    decode(str, root->getRight(), res);
-  }
-}
-void decode_1(int len, unsigned char *str, node *root,vector<char> * res) {
+//   if (str.back() == 0) {
+//     str.pop_back();
+//     decode(str, root->getLeft(), res);
+//   } else {
+//     str.pop_back();
+//     decode(str, root->getRight(), res);
+//   }
+// }
+
+/**
+ * 解码并写入文件
+ */
+void decode_1(int len, unsigned char *str, node *root, const char *filepath) {
   if (len == 0) return;
   int i = 0;
+  unsigned char buf[1024];
+  int index = 0;
   node *temp = root;
-  while (i < len && temp) {
+  ofstream outFile;
+  outFile.open(filepath, ios::out | ios::binary | ios::app);
+  if (!outFile) return;
+  while (i < len && temp && index < 1024) {
     if (temp->getData() != 0) {
-      if (temp->getData() == 257) {
-        res->push_back(0);
-      } else
-        res->push_back((char)root->getData());
+      if (temp->getData() == 255) {
+        buf[index] = 0;
+      } else {
+        buf[index] = temp->getData();
+      }
+      index++;
+      if (index >= 1023) {
+        //缓冲区满
+        outFile.seekp(0, ios::end);
+        outFile.write((char *)&buf, 1024);
+        index = 0;
+        memset(&buf, 0, 1024);
+      }
+      temp = root;
     }
-    if (root->getData() == 0) {
+    if (temp->getData() == 0) {
       if (str[i] == 0) {
         temp = temp->getLeft();
       } else {
         temp = temp->getRight();
       }
+      i++;
     }
-    if (!temp) temp = root;
-    i++;
+  }
+  if (index != 0) {
+    outFile.seekp(0, ios::end);
+    for (int l = 0; l < index; l++) {
+      outFile.write((char *)&buf[l], sizeof(buf[l]));
+    }
+    // outFile.write((char *)&buf, sizeof(buf));
+  }
+  outFile.close();
+}
+
+void menu() {
+  cout << "[1]:压缩文件"
+       << "\t"
+       << "[2]:解压文件" << endl;
+  cout << "请选择:";
+  int c;
+  node *root;
+  while (true) {
+    cin >> c;
+    if (c == 1) {
+      //压缩文件
+      string path;
+      cout << "请输入文件路径:";
+      cin >> path;
+      int *arr = getfile(path.c_str());
+      pri_queue queue;
+      init_queue(arr, &queue);
+      root = create_huffman_tree(&queue);
+      code_Map code_map;
+      vector<char> code;
+      get_huffman_code(code, root, &code_map);
+      encode(code_map, path.c_str());
+      string encode_path = path + ".huffman";
+      cout << "压缩完毕,文件名为:" << encode_path << endl;
+    }
+    if (c == 2) {
+      //解压文件
+      string path;
+      cout << "请输入文件路径:";
+      cin >> path;
+      unsigned char *ss = getfilestream(path.c_str());
+      // int size = sizeof(*ss);
+      string new_path;
+      cout << "请输入解压后文件路径:";
+      cin >> new_path;
+      decode_1(::all_size, ss, root, new_path.c_str());
+      cout << "解压完毕!" << endl;
+    }
   }
 }
