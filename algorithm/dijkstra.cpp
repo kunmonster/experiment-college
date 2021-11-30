@@ -9,7 +9,7 @@ int main() { return 0; }
 
 /**
  *dijstra 单源最短路径
- *point_num
+ *节点数量,起点,最短距离数组,最短路径的前一个节点,节点网
  */
 void dijstra(int point_num, int start, int *dis, int *pre, int **g) {
   if (!point_num) return;
