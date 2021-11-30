@@ -67,6 +67,8 @@ void decode_1(int, unsigned char *, node *, const char *);
 void menu();
 
 int all_size = 0;
+int old_byte = 0;
+
 int main() {
   menu();
   return 0;
@@ -134,9 +136,12 @@ int *getfile(const char *filePath) {
   }
   int *weight = new int[256]{0};
   unsigned char temp;
+  int old_size = 0;
   while (inFile.read((char *)&temp, sizeof(temp))) {
     weight[temp]++;
+    old_size++;
   }
+  ::old_byte = old_size;
   inFile.close();
   return weight;
 }
@@ -323,7 +328,10 @@ void menu() {
       get_huffman_code(code, root, &code_map);
       encode(code_map, path.c_str());
       string encode_path = path + ".huffman";
+      getfilestream(encode_path.c_str());
+      double rate = all_size/8 / (double)::old_byte;
       cout << "压缩完毕,文件名为:" << encode_path << endl;
+      cout<<"压缩率为:"<<rate<<endl;
     }
     if (c == 2) {
       //解压文件
