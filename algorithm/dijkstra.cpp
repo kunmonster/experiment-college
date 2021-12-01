@@ -4,20 +4,22 @@ using namespace std;
 
 #define MAX_INT 2147483647
 
-void dijstra(int, int, int *, int *, int [][5]);
-void print_path(int, int, int, int *);
+void dijstra(int, int, int *, int *, int[][5]);
+void print_path(int, int, int, const int *);
+void print_cloeset(const int, const int, const int *, const int *);
 int main() {
   int arr[5][5] = {{0, 10, MAX_INT, 30, 100},
                    {MAX_INT, 0, 50, MAX_INT, MAX_INT},
                    {MAX_INT, MAX_INT, 0, MAX_INT, 10},
                    {MAX_INT, MAX_INT, 20, 0, 60},
                    {MAX_INT, MAX_INT, MAX_INT, MAX_INT, 0}};
-  
+
   int point_num = 5;
-  int dis[5]={0};
-  int pre[5]={0};
-  dijstra(point_num,1,dis,pre,arr);
-  print_path(5,1,5,pre);
+  int dis[5] = {0};
+  int pre[5] = {0};
+  dijstra(point_num, 1, dis, pre, arr);
+  print_cloeset(5, 1, dis, pre);
+  // print_path(5, 1, 5, pre);
   return 0;
 }
 
@@ -28,6 +30,7 @@ int main() {
 void dijstra(int point_num, int start, int *dis, int *pre, int g[][5]) {
   if (!point_num) return;
   //维护一个标记数组，记录第n个点是否在特殊路径集合中
+
   bool s[point_num] = {false};
   int i, j;
   s[start - 1] = true;
@@ -66,7 +69,7 @@ void dijstra(int point_num, int start, int *dis, int *pre, int g[][5]) {
   }
 }
 
-void print_path(int len, int start, int end, int *pre) {
+void print_path(int len, int start, int end, const int *pre) {
   int temp = end - 1;
   stack<int> path;
   path.push(end);
@@ -79,5 +82,21 @@ void print_path(int len, int start, int end, int *pre) {
     cout << path.top();
     path.pop();
     if (!path.empty()) cout << "-->";
+  }
+}
+
+void print_cloeset(const int len, const int start, const int *dis,
+                   const int *pre) {
+  cout << "第" << start << "个节点到其他节点的最短距离分别为:" << endl;
+  cout << "节点"
+       << "\t"
+       << "距离"
+       << "\t"
+       << "路径" << endl;
+
+  for (int i = 0; i < len; i++) {
+    cout << i + 1 << "\t" << dis[i] << "\t";
+    print_path(len, start, i + 1, pre);
+    cout << endl;
   }
 }

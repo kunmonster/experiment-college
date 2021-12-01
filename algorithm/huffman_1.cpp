@@ -52,13 +52,13 @@ struct cmp {
 
 //
 typedef vector<char> code;
-typedef map<unsigned char, vector<char>> code_Map;
+typedef map<unsigned char, vector<unsigned char>> code_Map;
 typedef priority_queue<node *, vector<node *>, cmp> pri_queue;
 
 //
 void init_queue(int *, pri_queue *);
 node *create_huffman_tree(pri_queue *);
-void get_huffman_code(vector<char>, node *root, code_Map *);
+void get_huffman_code(vector<unsigned char>, node *root, code_Map *);
 int *getfile(const char *filePath);
 void encode(const code_Map, const char *);
 void decode(char *, node *);
@@ -110,13 +110,13 @@ node *create_huffman_tree(pri_queue *queue) {
 /**
  *根据哈夫曼树得到每个字符对应的编码,用map存放
  **/
-void get_huffman_code(vector<char> code, node *root, code_Map *code_map) {
+void get_huffman_code(vector<unsigned char> code, node *root, code_Map *code_map) {
   if (!root) {
     return;
   }
   if (root->getData() != 0) {
     //叶子节点
-    code_map->insert(std::pair<int, vector<char>>(root->getData(), code));
+    code_map->insert(std::pair<int, vector<unsigned char>>(root->getData(), code));
     return;
   }
   code.push_back(0);
@@ -148,24 +148,26 @@ int *getfile(const char *filePath) {
 void encode(const code_Map code_map, const char *path) {
   ifstream inFile;
   ofstream outFile;
-  inFile.open(path, ios::binary);
+  inFile.open(path, ios::binary|ios::in);
   if (!inFile) {
     //文件打开失败
     cout << "文件打开失败,程序退出" << endl;
     exit(1);
   }
-  char c;
+  unsigned char c;
   vector<unsigned char> res;
-  char temp;
+  unsigned char temp;
   int j = 1;
-  while ((c = inFile.get()) != EOF) {
-    vector<char> str;
+  while (inFile.read((char*)&c,sizeof(c))) {
+    vector<unsigned char> str;
     if (c == 0) {
       str = code_map.at(Zero);
-    } else if (c < 0) {
-      int index = (int)c + 256;
-      str = code_map.at(index);
-    } else {
+    }
+    //  else if (c < 0) {
+    //   int index = (int)c + 256;
+    //   str = code_map.at(index);
+    // } 
+    else {
       str = code_map.at((int)c);
     }
     for (int i = 0; i < str.size(); i++) {
@@ -195,7 +197,7 @@ void encode(const code_Map code_map, const char *path) {
   char new_path[256];
   strcpy(new_path, path);
   strcat(new_path, ".huffman");
-  outFile.open(new_path, ios::binary);
+  outFile.open(new_path, ios::binary | ios::out);
   for (int i = 0; i < res.size(); i++) {
     outFile.write((char *)&res[i], sizeof(res[i]));
   }
@@ -324,7 +326,7 @@ void menu() {
       init_queue(arr, &queue);
       root = create_huffman_tree(&queue);
       code_Map code_map;
-      vector<char> code;
+      vector<unsigned char> code;
       get_huffman_code(code, root, &code_map);
       encode(code_map, path.c_str());
       string encode_path = path + ".huffman";
