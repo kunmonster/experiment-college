@@ -271,7 +271,7 @@ void decode_1(int len, unsigned char *str, node *root, const char *filepath) {
   ofstream outFile;
   outFile.open(filepath, ios::out | ios::binary | ios::app);
   if (!outFile) return;
-  while (i < len && temp && index < 1024) {
+  while (i < len && temp && index < 1023) {
     if (temp->getData() != 0) {
       if (temp->getData() == 255) {
         buf[index] = 0;
