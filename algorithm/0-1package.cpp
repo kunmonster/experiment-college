@@ -1,3 +1,8 @@
+/**
+ * fkj
+ * 2021/12/3
+ * 回溯01背包
+*/
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -36,7 +41,7 @@ void sort(good* a, int n) {
 class knapsack {
  private:
   //上界函数
-  double bound(int i);
+  double bound(int);
   good* good_arr;      //重量数组
   bool* res;           //结果数组
   int num;             //物品数量
@@ -96,7 +101,6 @@ void knapsack::getBestMatch(int index) {
   //回溯
   if (index > this->num - 1) {
     this->best_value = this->current_value;
-    this->res[index] = true;
     return;
   }
   if ((this->current_weight + this->good_arr[index].weight) <= this->capacity) {
