@@ -22,16 +22,8 @@ class Nqueen {
   Nqueen(int);
   ~Nqueen();
   void BackTrack(int);
-  void Print(){
-    cout<<"总共有"<<sum<<"种解如下:"<<endl;
-    int size = this->res_arr->size();
-    for(int i=0;i<size;i++){
-      for(int j=1;j<=this->n;j++){
-        cout<<this->res_arr->at(i)[j]<<endl;
-      }
-      cout<<endl;
-    }
-  }
+  void Print();
+  void BackTrack_iterator();
 };
 
 Nqueen::Nqueen(int n) {
@@ -74,11 +66,57 @@ void Nqueen::BackTrack(int index) {
     }
   }
 }
+void Nqueen::Print() {
+  cout << "总共有" << sum << "种解如下:" << endl;
+  int size = this->res_arr->size();
+  for (int i = 0; i < size; i++) {
+    for (int j = 1; j <= this->n; j++) {
+      cout << this->res_arr->at(i)[j] << endl;
+    }
+    cout << endl;
+  }
+}
+
+void Nqueen::BackTrack_iterator() {
+  //迭代版本
+  int row = 1;
+
+  while (row >= 1) {
+    this->res[row]++;
+    while (this->res[row] <= n && !place(row)) res[row]++;
+    if (this->res[row] <= n) {
+      if (row == n) {
+        //找到解
+        vector<string> temp(n + 1);
+        for (int i = 1; i <= this->n; i++) {
+          for (int j = 1; j <= this->n; j++) {
+            if (res[i] != j) {
+              temp[i].append(". ");
+            } else {
+              temp[i].append("Q ");
+            }
+          }
+        }
+        this->res_arr->push_back(temp);
+        sum++;
+      } else {
+        //还未到n行,但在此行找到存放的位置
+        row++;
+      }
+    } else {
+      //在当前行没找到合适的位置存放,回溯,将上一行的滑动
+      this->res[row] = 0;
+      row--;
+    }
+  }
+}
+
 int main() {
   int a;
   cin >> a;
   Nqueen* nqueen = new Nqueen(a);
-  nqueen->BackTrack(1);
+  // nqueen->BackTrack(1);
+  nqueen->BackTrack_iterator();
   nqueen->Print();
   return 0;
 }
