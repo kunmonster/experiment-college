@@ -126,7 +126,7 @@ void knapsack::getResult() {
     cout << "装入背包的物品序号为:" << endl;
     for (int i = 0; i < size; i++) {
       if (res[i]) {
-        cout << i << "\t";
+        cout << i+1 << "\t";
       }
     }
   }
