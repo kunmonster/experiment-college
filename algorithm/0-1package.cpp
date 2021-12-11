@@ -2,7 +2,7 @@
  * fkj
  * 2021/12/3
  * 回溯01背包
-*/
+ */
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -29,8 +29,8 @@ void sort(good* a, int n) {
     for (j = 0; j < n - 1 - i; j++) {
       if (a[j].average_value < a[j + 1].average_value) {
         good temp = a[i];
-        a[j] = a[j+1];
-        a[j+1] = temp;
+        a[j] = a[j + 1];
+        a[j + 1] = temp;
         flag = true;
       }
     }
@@ -42,8 +42,9 @@ class knapsack {
  private:
   //上界函数
   double bound(int);
-  good* good_arr;      //重量数组
-  bool* res;           //结果数组
+  good* good_arr;  //重量数组
+  bool* res;       //结果数组
+  bool* final_Res;
   int num;             //物品数量
   int capacity;        //背包容量
   int best_value;      //最大价值
@@ -54,6 +55,7 @@ class knapsack {
   knapsack(good*, int, int);
   void getBestMatch(int);
   void getResult();
+  void getBsetMatch_iterator();
   ~knapsack();
 };
 
@@ -66,6 +68,7 @@ knapsack::knapsack(good* good_arr, int num, int capacity) {
   this->best_value = 0;
   this->num = num;
   this->res = new bool[this->num]{false};
+  this->final_Res = new bool[this->num]{false};
 }
 
 knapsack::~knapsack(){};
@@ -101,6 +104,9 @@ void knapsack::getBestMatch(int index) {
   //回溯
   if (index > this->num - 1) {
     this->best_value = this->current_value;
+    for (int m = 0; m < this->num; m++) {
+      this->final_Res[m] = this->res[m];
+    }
     return;
   }
   if ((this->current_weight + this->good_arr[index].weight) <= this->capacity) {
@@ -119,14 +125,51 @@ void knapsack::getBestMatch(int index) {
   }
 }
 
+void knapsack::getBsetMatch_iterator() {
+  int i = 0;
+  while (i >= 0) {
+    while ((this->current_weight + this->good_arr[i].weight) <=
+               this->capacity &&
+           i < this->num) {
+      //左子树
+      current_value += this->good_arr[i].value;
+      current_weight += this->good_arr[i].weight;
+      res[i] = true;
+      i++;
+    }
+    if (i >= num - 1) {
+      //到达叶节点
+      this->best_value = this->current_value;
+      for (int m = 0; m < this->num; m++) {
+        this->final_Res[m] = this->res[m];
+      }
+    } else {
+      //未达到叶子节点,但是容量不够了,直接进入右子树
+      res[i] = false;
+      i++;
+    }
+    while (this->best_value >= bound(i + 1)) {
+      // res[i] = false;
+      i--;
+      while (i >= 0 && !res[i]) {
+        i--;
+      }
+      if (i <= 0) break;
+      res[i] = false;
+      current_value -= this->good_arr[i].value;
+      current_weight -= this->good_arr[i].weight;
+    }
+  }
+}
+
 void knapsack::getResult() {
-  if (this->res) {
+  if (this->final_Res) {
     cout << "装入背包最大价值为:" << this->best_value << endl;
     int size = this->num;
     cout << "装入背包的物品序号为:" << endl;
     for (int i = 0; i < size; i++) {
-      if (res[i]) {
-        cout << i+1 << "\t";
+      if (final_Res[i]) {
+        cout << i + 1 << "\t";
       }
     }
   }
@@ -146,7 +189,8 @@ int main() {
     good_arr[i].average_value = value / (double)weight;
   }
   knapsack* sol = new knapsack(good_arr, n, c);
-  sol->getBestMatch(0);
+  // sol->getBestMatch(0);
+  sol->getBsetMatch_iterator();
   sol->getResult();
   return 0;
 }
