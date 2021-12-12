@@ -12,18 +12,21 @@ class KnapSack {
  private:
   int capacity;  //背包容量
   int n;         //物品个数
-  int* w;        //重量数组
-  int* v;        //价值数组
-  int** dp;      //最大值存放
+  int* res;
+  int* w;    //重量数组
+  int* v;    //价值数组
+  int** dp;  //最大值存放
  public:
   KnapSack(int, int);
   void Solution();
+  void TrackBack();
   ~KnapSack();
 };
 
 KnapSack::KnapSack(int n, int c) {
   this->n = n;
   this->capacity = c;
+  this->res = new int[n + 1]{0};
   cout << "请输入物品的重量和价值:[重量] [价值]" << endl;
   this->w = new int[n + 1]{0};
   this->v = new int[n + 1]{0};
@@ -35,7 +38,7 @@ KnapSack::KnapSack(int n, int c) {
   }
   this->dp = new int*[n + 1];
   for (int i = 0; i <= n; i++) {
-    this->dp[i] = new int[c+1]{0};
+    this->dp[i] = new int[c + 1]{0};
   }
 }
 void KnapSack::Solution() {
@@ -44,11 +47,21 @@ void KnapSack::Solution() {
     for (j = 1; j <= this->capacity; j++) {
       if (j < this->w[i]) {
         //容量不足以放物品,这时候最大价值就是子问题
-        this->dp[i][j] = dp[i-1][j];
+        this->dp[i][j] = dp[i - 1][j];
       } else {
-        this->dp[i][j] = max(this->dp[i-1][j - this->w[i]] + this->v[i],
-                             this->dp[i-1][j]);
+        this->dp[i][j] = max(this->dp[i - 1][j - this->w[i]] + this->v[i],
+                             this->dp[i - 1][j]);
       }
+    }
+  }
+}
+void KnapSack::TrackBack() {
+  for (int i = 1; i <= this->n; i++) {
+    if (this->dp[i][this->capacity] == this->dp[i - 1][this->capacity]) {
+      this->res[i] = 0;
+    } else {
+      this->res[i] = 1;
+      this->capacity -= this->w[i];
     }
   }
 }
@@ -56,5 +69,6 @@ void KnapSack::Solution() {
 int main() {
   KnapSack* knapsack = new KnapSack(5, 10);
   knapsack->Solution();
+  knapsack->TrackBack();
   return 0;
 }
