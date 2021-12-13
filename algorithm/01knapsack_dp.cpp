@@ -20,6 +20,7 @@ class KnapSack {
   KnapSack(int, int);
   void Solution();
   void TrackBack();
+  void Print();
   ~KnapSack();
 };
 
@@ -56,19 +57,33 @@ void KnapSack::Solution() {
   }
 }
 void KnapSack::TrackBack() {
-  for (int i = 1; i <= this->n; i++) {
-    if (this->dp[i][this->capacity] == this->dp[i - 1][this->capacity]) {
+  int temp = this->capacity;
+  for (int i = n; i >=1 ; i--) {
+    if (this->dp[i][temp] == this->dp[i - 1][temp]) {
       this->res[i] = 0;
     } else {
       this->res[i] = 1;
-      this->capacity -= this->w[i];
+      temp -= this->w[i];
+    }
+  }
+}
+void KnapSack::Print() {
+  cout << "最大价值为:" << this->dp[this->n][this->capacity] << endl;
+  cout << "物品组合为:";
+  for (int i = 1; i <= this->n; i++) {
+    if (this->res[i] == 1) {
+      cout << i << "\t";
     }
   }
 }
 
 int main() {
-  KnapSack* knapsack = new KnapSack(5, 10);
+  cout << "请输入物品数量和背包容量:[数量] [容量]" << endl;
+  int n, c;
+  cin >> n >> c;
+  KnapSack* knapsack = new KnapSack(n, c);
   knapsack->Solution();
   knapsack->TrackBack();
+  knapsack->Print();
   return 0;
 }
