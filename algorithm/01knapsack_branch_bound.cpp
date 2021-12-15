@@ -94,9 +94,6 @@ KnapSack::KnapSack(int n, int c) {
     good_arr[i].index = i;
   }
   sort(this->good_arr, n + 1);
-  for (int i = 1; i <= n; i++) {
-    this->good_arr[i].index = i;
-  }
 }
 double KnapSack::Bound(int index) {
   //限界函数,根据此函数修改优先队列
