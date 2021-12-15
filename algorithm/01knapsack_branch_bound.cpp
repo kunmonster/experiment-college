@@ -16,7 +16,7 @@ typedef struct _GOOD_ {
 
 typedef struct _NODE_ {
   struct _NODE_* parent;  //父节点
-  int left;               //左子节点
+  bool left;               //左子节点
   double up;              //此节点上界
   int value;              //此节点时背包的价值
   int weight;             //此节点时背包的重量
@@ -33,7 +33,7 @@ typedef priority_queue<node*, vector<node*>, cmp> pri_que;
 /**
  * 添加节点进入优先队列
  */
-void AddNode(pri_que& p, node* E, int wt, int up, int value, int i, int lc) {
+void AddNode(pri_que& p, node* E, int wt, int up, int value, int i, bool lc) {
   node* a = (node*)malloc(sizeof(node));
   a->parent = E;
   a->left = lc;
@@ -70,7 +70,7 @@ class KnapSack {
   int cw;             //背包当前重量
   int cv;             //背包当前价值
   int best;           //最优价值
-  int* res;           //最优组合
+  bool* res;          //最优组合
   double Bound(int);  //上界计算函数
 
  public:
@@ -83,7 +83,7 @@ KnapSack::KnapSack(int n, int c) {
   this->n = n;
   this->c = c;
   this->good_arr = new good[n + 1];
-  this->res = new int[n + 1]{0};
+  this->res = new bool[n + 1]{false};
   this->cw = 0;
   this->cv = 0;
   this->best = 0;
@@ -130,12 +130,12 @@ void KnapSack::Solution() {
         this->best = this->cv + this->good_arr[i].value;
       }
       AddNode(p, E, this->cw + this->good_arr[i].weight, up,
-              this->cv + this->good_arr[i].value, i, 1);
+              this->cv + this->good_arr[i].value, i, true);
     }
     //右子树
     up = Bound(i + 1);
     if (up >= best) {
-      AddNode(p, E, this->cw, up, this->cv, i, 0);
+      AddNode(p, E, this->cw, up, this->cv, i, false);
     }
     //选出上界最大的一个扩展
     E = p.top();
@@ -154,7 +154,7 @@ void KnapSack::Print() {
   cout << "背包最大价值为:" << this->best << endl;
   cout << "组合为:" << endl;
   for (int i = 1; i <= n; i++) {
-    if (this->res[i] == 1) cout << i << "\t";
+    if (this->res[i]) cout << i << "\t";
   }
 }
 int main() {
