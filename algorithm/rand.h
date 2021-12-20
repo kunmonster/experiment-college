@@ -27,13 +27,3 @@ unsigned short Rand::generateRand(unsigned long n){
 double Rand::generateRand_1(){
   return this->generateRand(maxshort) / (double)maxshort;
 }
-
-int main(){
-  Rand rand;
-  int a = rand.generateRand(5);
-  int arr[100]{0};
-  for(int i=0;i<=99;i++){
-    arr[i]=rand.generateRand(5);
-  }
-  return 0;
-}
