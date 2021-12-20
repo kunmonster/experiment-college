@@ -17,7 +17,7 @@ class Node {
     void setData(T data){
         this->data = data;
     }
-    Node<T> getNext(){
+    Node<T> * getNext(){
         return this->next;
     }
 };
