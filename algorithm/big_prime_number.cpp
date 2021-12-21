@@ -44,12 +44,12 @@ LL quick_power(LL a, LL b, LL p) {
 bool Miller_Rabin(LL n) {
   //判断是否为素数
   if (n == 2) return true;
-  if (n < 2 || !(n & 1)) return false;
+  if (n < 2 || n % 2 == 0) return false;
   LL m = n - 1;
   int k = 0;
   //找到公式中的K然后开始从k*2^0开始探测
   while ((m & 1) == 0) {
-    k++;     //为t
+    k++;      //为t
     m >>= 1;  //为k
   }
   //费马小定律
@@ -58,15 +58,18 @@ bool Miller_Rabin(LL n) {
   for (int i = 0; i < 10; i++) {
     LL a = randnumber.generateRand(n - 2) + 1;
     //将a进行快速幂操作,幂为m(公式中的k)
+    cout << "选定区间内的随机数a为:" << a << endl;
     LL x = quick_power(a, m, n);
     LL y = 0;
     for (int j = 0; j < k; j++) {
       //从a^m开始探测,每一次探测将其平方,注意使用的取模运算法则
+      cout << "探测次数即a^(k*2^j) j=" << j << endl;
       y = qucik_multiply(x, x, n);
       if (y == 1 && x != 1 && x != n - 1) return false;
       x = y;
     }
     if (y != 1) return false;
+    cout << endl << "i=" << i;
   }
   return true;
 }
@@ -75,9 +78,9 @@ int main() {
   LL n;
   while (cin >> n) {
     if (Miller_Rabin(n))
-      printf("是素数\n");
+      cout << n << "是素数" << endl;
     else
-      printf("不是素数\n");
+      cout << n << "不是素数" << endl;
   }
   return 0;
   return 0;
