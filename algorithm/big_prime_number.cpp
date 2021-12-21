@@ -15,7 +15,7 @@ LL gcd(LL a, LL b) { return b ? gcd(b, a % b) : a; }
  * 快速乘法
  */
 LL qucik_multiply(LL a, LL b, LL p) {
-  //快速乘,转化为二进制,再相加
+  //快速乘,转化为二进制,再相加,对P求余
   LL ans = 0;
   while (b) {
     if (b & 1) {
@@ -27,8 +27,7 @@ LL qucik_multiply(LL a, LL b, LL p) {
   return ans;
 }
 /**
- * 快速幂
- *
+ * 快速幂,并且对P求余数
  */
 LL quick_power(LL a, LL b, LL p) {
   LL ans = 1;
@@ -48,6 +47,7 @@ bool Miller_Rabin(LL n) {
   if (n < 2 || !(n & 1)) return false;
   LL m = n - 1;
   int k = 0;
+  //找到公式中的K然后开始从k*2^0开始探测
   while ((m & 1) == 0) {
     k++;     //为t
     m >>= 1;  //为k
@@ -56,10 +56,12 @@ bool Miller_Rabin(LL n) {
   // a^p-1 = 1(mod p)
   // 10为产生的a的个数
   for (int i = 0; i < 10; i++) {
-    LL a = randnumber.generateRand(n - 1) + 1;
+    LL a = randnumber.generateRand(n - 2) + 1;
+    //将a进行快速幂操作,幂为m(公式中的k)
     LL x = quick_power(a, m, n);
     LL y = 0;
     for (int j = 0; j < k; j++) {
+      //从a^m开始探测,每一次探测将其平方,注意使用的取模运算法则
       y = qucik_multiply(x, x, n);
       if (y == 1 && x != 1 && x != n - 1) return false;
       x = y;
