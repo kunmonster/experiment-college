@@ -50,7 +50,35 @@ void LinkList<T>::createLinkList() {
   }
 }
 template <typename T>
-bool LinkList<T>::insertNode(int index, Node<T>& node) {}
+bool LinkList<T>::insertNode(int index, Node<T>& node) {
+  int i = 0;
+  Node<T>* temp = head;
+  while (i <= index && temp) {
+    temp = temp->next;
+    i++;
+  }
+  if (!temp) return false;
+  Node<T>* after = temp->getNext();
+  temp->setNext(node);
+  node->setNext(after);
+  return true;
+}
+
+template <typename T>
+bool LinkList<T>::removeNode(int index) {
+  Node<T>* temp = head;
+  int i = 0;
+  while (i < index - 1) {
+    temp = temp->getNext();
+    i++;
+  }
+  if(!temp) return false;
+  Node<T>* temp_next = temp->getNext();
+  temp->setNext(temp_next->getNext());
+  delete temp_next;
+  temp_next = NULL;
+  return true;
+}
 int main() {
   LinkList<char>* link = new LinkList<char>();
   link->createLinkList();
