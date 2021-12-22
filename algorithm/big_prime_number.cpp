@@ -69,7 +69,7 @@ bool Miller_Rabin(LL n) {
       x = y;
     }
     if (y != 1) return false;
-    cout << endl << "i=" << i;
+    cout << endl << "i=" << i << endl;
   }
   return true;
 }
