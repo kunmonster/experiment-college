@@ -37,6 +37,7 @@ class LinkList {
   bool alterDataByIndex(int index, T data);
   //通过索引获取元素
   T getDataByIndex(int index);
+  void getLen();
   void clear();
 };
 template <typename T>
@@ -54,7 +55,7 @@ bool LinkList<T>::insertNode(int index, Node<T>& node) {
   int i = 0;
   Node<T>* temp = head;
   while (i <= index && temp) {
-    temp = temp->next;
+    temp = temp->getNext();
     i++;
   }
   if (!temp) return false;
@@ -72,12 +73,34 @@ bool LinkList<T>::removeNode(int index) {
     temp = temp->getNext();
     i++;
   }
-  if(!temp) return false;
+  if (!temp) return false;
   Node<T>* temp_next = temp->getNext();
   temp->setNext(temp_next->getNext());
   delete temp_next;
   temp_next = NULL;
   return true;
+}
+template <typename T>
+
+bool LinkList<T>::alterDataByIndex(int index, T data) {
+  Node<T>* temp = head;
+  int i = 0;
+  while (i < index) {
+    temp = temp->getNext();
+    i++;
+  }
+  if (!temp) return false;
+  temp->setData(data);
+  return true;
+}
+template <typename T>
+void LinkList<T>::getLen() {
+  int i = 0;
+  Node<T>* temp = head;
+  while (temp->getNext()) {
+    i++;
+    temp = temp->getNext();
+  }
 }
 int main() {
   LinkList<char>* link = new LinkList<char>();
