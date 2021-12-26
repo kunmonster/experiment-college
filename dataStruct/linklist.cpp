@@ -85,6 +85,7 @@ template <typename T>
 bool LinkList<T>::alterDataByIndex(int index, T data) {
   Node<T>* temp = head;
   int i = 0;
+  
   while (i < index) {
     temp = temp->getNext();
     i++;
