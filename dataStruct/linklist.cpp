@@ -9,7 +9,6 @@ class Node {
   Node* next;
 
  public:
-  // Node<T>(void):data(NULL),next(NULL){}
   Node<T>(T data = T(), Node<T>* next = NULL) : data(data), next(next) {}
   void setNext(Node<T>* next) { this->next = next; }
   void setData(T data) { this->data = data; }
@@ -37,7 +36,7 @@ class LinkList {
   bool alterDataByIndex(int index, T data);
   //通过索引获取元素
   T getDataByIndex(int index);
-  void getLen();
+  int getLen();
   void clear();
 };
 template <typename T>
@@ -85,7 +84,7 @@ template <typename T>
 bool LinkList<T>::alterDataByIndex(int index, T data) {
   Node<T>* temp = head;
   int i = 0;
-  
+
   while (i < index) {
     temp = temp->getNext();
     i++;
@@ -95,16 +94,25 @@ bool LinkList<T>::alterDataByIndex(int index, T data) {
   return true;
 }
 template <typename T>
-void LinkList<T>::getLen() {
+int LinkList<T>::getLen() {
   int i = 0;
   Node<T>* temp = head;
   while (temp->getNext()) {
     i++;
     temp = temp->getNext();
   }
+  return i;
+}
+template <typename T>
+void LinkList<T>::clear() {
+  while (head->getNext()) {
+    delete head->getNext();
+    head->next = NULL;
+  }
 }
 int main() {
   LinkList<char>* link = new LinkList<char>();
   link->createLinkList();
+  int len = link->getLen();
   return 0;
 }
