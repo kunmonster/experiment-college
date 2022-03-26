@@ -1,118 +1,102 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-template <typename T>
+enum State { ERROR, SUCCESS };
 
+template <typename T>
 class Node {
- private:
+ public:
   T data;
   Node* next;
-
- public:
-  Node<T>(T data = T(), Node<T>* next = NULL) : data(data), next(next) {}
-  void setNext(Node<T>* next) { this->next = next; }
-  void setData(T data) { this->data = data; }
-  Node<T>* getNext() { return this->next; }
+  Node(T data = NULL, Node* next = NULL) {
+    this->data = data;
+    this->next = next;
+  }
+  ~Node();
 };
 
-template <typename T>
-class LinkList {
- private:
-  Node<T>* head;
-  int len;
-
+template <typename T,typename Node>
+class linkList {
  public:
-  //初始化构造
-  LinkList() : head(new Node<T>()), len(0) {}
+  //默认构造
+  // default constructor
+  Node *head, *tail;
+  int size = 0;
+  linkList() {
+    this->head = new Node();
+    this->tail = head;
+    this->size = 0;
+  }
+
+  //初始构造
+  linkList(Node* head, Node* tail = NULL) {
+    this->head = head;
+    Node* temp = head;
+    while (temp && temp->next) temp = temp->next;
+    this->tail = temp;
+  }
+
   //拷贝构造
-  LinkList(Node<T>* node);
-  //创建链表
-  void createLinkList();
-  //插入元素,index为索引
-  bool insertNode(int index, Node<T>& node);
-  //删除链表第index个元素
-  bool removeNode(int index);
-  //根据索引修改元素
-  bool alterDataByIndex(int index, T data);
-  //通过索引获取元素
-  T getDataByIndex(int index);
-  int getLen();
-  void clear();
+  //深拷贝
+  linkList(const linkList* initlinkList) {
+    Node* temp = initlinkList->head;
+    int size = initlinkList->size;
+    this->size = size;
+    Node* cur = this->head = new Node();
+
+    while (temp) {
+      cur = new Node(temp->data, temp->next);
+      tail = cur;
+      cur = cur->next;
+    }
+  }
+
+  bool empty() {
+    return this->head == this->tail || this->size == 0 ? true : false;
+  }
+
+  // opreation
+  State insert(T data) {
+    //默认插在链表尾部
+    //表为空
+    if (this->empty()) return State::ERROR;
+    this->tail->next = new Node(data);
+    if (!this->tail->next)
+      return State::ERROR;
+    else {
+      //插入成功
+      this->tail = this->tail->next;
+      this->size++;
+      return State::SUCCESS;
+    }
+  }
+
+  State insert(T data, int index) {
+    if (index == 0) {
+      if(this->insertHead(data)) return State::SUCCESS;
+    }
+    else{
+      if(this->empty()) return State::ERROR;
+      else{
+        auto cur = head;
+        int i=1;
+        while(cur && i<=index){
+          cur = cur->next;
+          i++;
+        }
+        Node * newnode = new Node(data,cur->next);
+        cur->next  = newnode;
+      }
+    }
+  }
+
+  State insertHead(T data) {
+    Node* newnode = new Node(data);
+    newnode->next = this->head;
+    this->head = newnode;
+    this->size++;
+    return State::SUCCESS;
+  }
+
+  ~linkList();
 };
-template <typename T>
-void LinkList<T>::createLinkList() {
-  T data;
-  Node<T>* temp = head;
-  while (cin >> data) {
-    Node<T>* tmp = new Node<T>(data, NULL);
-    temp->setNext(tmp);
-    temp = temp->getNext();
-  }
-}
-template <typename T>
-bool LinkList<T>::insertNode(int index, Node<T>& node) {
-  int i = 0;
-  Node<T>* temp = head;
-  while (i <= index && temp) {
-    temp = temp->getNext();
-    i++;
-  }
-  if (!temp) return false;
-  Node<T>* after = temp->getNext();
-  temp->setNext(node);
-  node->setNext(after);
-  return true;
-}
-
-template <typename T>
-bool LinkList<T>::removeNode(int index) {
-  Node<T>* temp = head;
-  int i = 0;
-  while (i < index - 1) {
-    temp = temp->getNext();
-    i++;
-  }
-  if (!temp) return false;
-  Node<T>* temp_next = temp->getNext();
-  temp->setNext(temp_next->getNext());
-  delete temp_next;
-  temp_next = NULL;
-  return true;
-}
-template <typename T>
-
-bool LinkList<T>::alterDataByIndex(int index, T data) {
-  Node<T>* temp = head;
-  int i = 0;
-
-  while (i < index) {
-    temp = temp->getNext();
-    i++;
-  }
-  if (!temp) return false;
-  temp->setData(data);
-  return true;
-}
-template <typename T>
-int LinkList<T>::getLen() {
-  int i = 0;
-  Node<T>* temp = head;
-  while (temp->getNext()) {
-    i++;
-    temp = temp->getNext();
-  }
-  return i;
-}
-template <typename T>
-void LinkList<T>::clear() {
-  while (head->getNext()) {
-    delete head->getNext();
-    head->next = NULL;
-  }
-}
-int main() {
-  LinkList<char>* link = new LinkList<char>();
-  link->createLinkList();
-  int len = link->getLen();
-  return 0;
-}
