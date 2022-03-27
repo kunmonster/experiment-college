@@ -15,7 +15,7 @@ class Node {
   ~Node();
 };
 
-template <typename T,typename Node>
+template <typename T, typename Node>
 class linkList {
  public:
   //默认构造
@@ -73,19 +73,20 @@ class linkList {
 
   State insert(T data, int index) {
     if (index == 0) {
-      if(this->insertHead(data)) return State::SUCCESS;
-    }
-    else{
-      if(this->empty()) return State::ERROR;
-      else{
+      if (this->insertHead(data)) return State::SUCCESS;
+    } else {
+      if (this->empty())
+        return State::ERROR;
+      else {
         auto cur = head;
-        int i=1;
-        while(cur && i<=index){
+        int i = 1;
+        while (cur && i <= index) {
           cur = cur->next;
           i++;
         }
-        Node * newnode = new Node(data,cur->next);
-        cur->next  = newnode;
+        Node* newnode = new Node(data, cur->next);
+        cur->next = newnode;
+        return State::SUCCESS;
       }
     }
   }
@@ -97,6 +98,26 @@ class linkList {
     this->size++;
     return State::SUCCESS;
   }
+
+  State remove(int index) {
+    if (index <= 0 || index > this->size || this->empty()) return State::ERROR;
+    int i = 1;
+    Node* temp = new Node();
+    temp->next = this->head;
+    while (temp) {
+      if (i == index) {
+        temp->next = temp->next->next;
+        return SUCCESS;
+      }
+      i++;
+    }
+    return State::ERROR;
+  }
+
+  // wait to finish
+  T getElemetByIndex(int index) {}
+
+  State reverseList() {}
 
   ~linkList();
 };
