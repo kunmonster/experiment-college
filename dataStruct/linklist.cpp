@@ -12,7 +12,7 @@ class Node {
     this->data = data;
     this->next = next;
   }
-  ~Node();
+  ~Node() {}
 };
 
 template <typename T, typename Node>
@@ -43,6 +43,7 @@ class linkList {
     int size = initlinkList->size;
     this->size = size;
     Node* cur = this->head = new Node();
+    cur = cur->next;
 
     while (temp) {
       cur = new Node(temp->data, temp->next);
@@ -51,11 +52,32 @@ class linkList {
     }
   }
 
+  //判断链表是否为空
   bool empty() {
     return this->head == this->tail || this->size == 0 ? true : false;
   }
 
+  //清空链表
+  bool clear() {
+    if (this->empty()) return true;
+    Node* cur = this->head;
+    auto temp = new Node();
+    while (cur) {
+      temp = cur->next;
+      delete cur;
+      cur = temp;
+    }
+    delete temp;
+    temp = nullptr;
+    delete cur;
+    cur = nullptr;
+    this->tail = this->head = nullptr;
+    this->size = 0;
+    return true;
+  }
+
   // opreation
+  // pass
   State insert(T data) {
     //默认插在链表尾部
     //表为空
@@ -70,50 +92,91 @@ class linkList {
     }
   }
 
-  State insert(T data, int index) {
-    if (index == 0) {
+  // param : T , int
+  // description : the data to insert , the sequence of the data
+  State insert_after(T data, int index) {
+    if (index < 0 || index > this->size) {
+      return State::ERROR;
+    } else if (index == 0) {
       if (this->insertHead(data)) return State::SUCCESS;
+      return State::ERROR;
     } else {
       if (this->empty())
         return State::ERROR;
       else {
+        if (index == this->size) {
+          //直接在尾节点后面插入
+          this->tail->next = new Node(data);
+          this->tail = this->tail->next;
+          this->size++;
+          return State::SUCCESS;
+        }
         auto cur = head;
-        int i = 1;
-        while (cur && i <= index) {
+        int i = 0;
+        while (cur && i < index) {
           cur = cur->next;
           i++;
         }
         Node* newnode = new Node(data, cur->next);
         cur->next = newnode;
+        newnode = NULL;
+        this->size++;
         return State::SUCCESS;
       }
     }
   }
 
+  // param : T
+  // description : insert the data before the first node
   State insertHead(T data) {
-    Node* newnode = new Node(data);
-    newnode->next = this->head;
-    this->head = newnode;
+    if (this->empty()) {
+      if (this->head != nullptr)
+        this->head->next = new Node(data);
+      else
+        this->head = new Node(0, new Node(data));
+      this->tail = this->head->next;
+      return State::SUCCESS;
+    }
+    Node* newnode = new Node(data, this->head->next);
+    this->head->next = newnode;
     this->size++;
+    newnode = NULL;
     return State::SUCCESS;
   }
 
+  // param : int
+  // remove the certain element in index
   State remove(int index) {
-    if (index <= 0 || index > this->size || this->empty()) return State::ERROR;
-    int i = 1;
-    Node* temp = new Node();
-    temp->next = this->head;
-    while (temp) {
-      if (i == index) {
-        temp->next = temp->next->next;
-        return SUCCESS;
+    if (index <= 0 || index > this->size || this->empty())
+      return State::ERROR;
+    else if (index == 1) {
+      auto temp = head->next;
+      head->next = head->next->next;
+      delete temp;
+      temp = nullptr;
+      this->size--;
+      return State::SUCCESS;
+    } else {
+      int i = 0;
+      Node* cur = head;
+      while (cur && i < index - 1) {
+        cur = cur->next;
+        i++;
       }
-      i++;
+      auto needdel = cur->next;
+      cur->next = cur->next->next;
+      delete needdel;
+      needdel = nullptr;
+      while (cur && cur->next) cur = cur->next;
+      this->tail = cur;
+      cur = nullptr;
+      this->size--;
+      return State::ERROR;
     }
-    return State::ERROR;
   }
 
-  // wait to finish
+  // param : int
+  // description : get the certain element in index
   T getElemetByIndex(int index) {
     if (index <= 0 || index > this->size || this->empty()) return NULL;
     auto cur = this->head;
@@ -121,17 +184,26 @@ class linkList {
       cur = cur->next;
       index--;
     }
-    return cur->data;
+    T res = cur->data;
+    cur = nullptr;
+    return res;
   }
 
-  State reverseList() {}
+  // State reverseList() {}
 
   ~linkList();
 };
 
 int main() {
-  linkList<char, Node<char>>* a = new linkList<char, Node<char>>();
-  a->insert('a');
-  a->insert('b');
+  // linkList<char, Node<char>>* a = new linkList<char, Node<char>>();
+  // a->insert('a');
+  // a->insert('b');
+  // a->insert_after('c', 1);
+  // a->insert_after('d', 3);
+  // char s = a->getElemetByIndex(1);
+  // char s1 = a->getElemetByIndex(2);
+  // char s2 = a->getElemetByIndex(3);
+  // // a->clear();
+  // bool res2 = a->empty();
   return 0;
 }
