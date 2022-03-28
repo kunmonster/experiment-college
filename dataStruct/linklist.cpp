@@ -8,7 +8,7 @@ class Node {
  public:
   T data;
   Node* next;
-  Node(T data = NULL, Node* next = NULL) {
+  Node(T data = 0, Node* next = NULL) {
     this->data = data;
     this->next = next;
   }
@@ -59,7 +59,6 @@ class linkList {
   State insert(T data) {
     //默认插在链表尾部
     //表为空
-    if (this->empty()) return State::ERROR;
     this->tail->next = new Node(data);
     if (!this->tail->next)
       return State::ERROR;
@@ -115,9 +114,24 @@ class linkList {
   }
 
   // wait to finish
-  T getElemetByIndex(int index) {}
+  T getElemetByIndex(int index) {
+    if (index <= 0 || index > this->size || this->empty()) return NULL;
+    auto cur = this->head;
+    while (cur && index >= 1) {
+      cur = cur->next;
+      index--;
+    }
+    return cur->data;
+  }
 
   State reverseList() {}
 
   ~linkList();
 };
+
+int main() {
+  linkList<char, Node<char>>* a = new linkList<char, Node<char>>();
+  a->insert('a');
+  a->insert('b');
+  return 0;
+}
