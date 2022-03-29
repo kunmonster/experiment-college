@@ -175,10 +175,14 @@ class linkList {
     }
   }
 
+  State pop() { return this->remove(this->size); }
+
+  State push(T data) { return this->insert(data); }
+
   // param : int
   // description : get the certain element in index
   T getElemetByIndex(int index) {
-    if (index <= 0 || index > this->size || this->empty()) return NULL;
+    if (index <= 0 || index > this->size || this->empty()) return 0;
     auto cur = this->head;
     while (cur && index >= 1) {
       cur = cur->next;
@@ -189,21 +193,48 @@ class linkList {
     return res;
   }
 
-  // State reverseList() {}
+  // description : reverse the linklist
+  State reverseList() {
+    if (this->empty())
+      return State::ERROR;
+    else {
+      auto cur = new Node();
+      cur = head->next;
+      this->tail = cur;
+      while (cur && cur->next) {
+        auto tmp = cur->next;
+        cur->next = tmp->next;
+        tmp->next = head->next;
+        head->next = tmp;
+        tmp = nullptr;
+      }
+      cur = nullptr;
+      return State::SUCCESS;
+    }
+  }
 
   ~linkList();
 };
 
 int main() {
-  // linkList<char, Node<char>>* a = new linkList<char, Node<char>>();
+  linkList<char, Node<char>>* a = new linkList<char, Node<char>>();
   // a->insert('a');
   // a->insert('b');
-  // a->insert_after('c', 1);
+  // a->insert_after('c', 2);
   // a->insert_after('d', 3);
-  // char s = a->getElemetByIndex(1);
-  // char s1 = a->getElemetByIndex(2);
-  // char s2 = a->getElemetByIndex(3);
-  // // a->clear();
-  // bool res2 = a->empty();
+  // a->insert_after('e', 1);
+  // a->insert_after('f', 3);
+  // a->insert_after('g', 4);
+  // a->reverseList();
+  // a->insert('z');
+  // a->remove(1);
+  // char s = a->getElemetByIndex(7);
+  // a->remove(7);
+  // a->pop();
+  // a->push('x');
+  // // char s1 = a->getElemetByIndex(2);
+  // // char s2 = a->getElemetByIndex(3);
+  // a->clear();
+  // // bool res2 = a->empty();
   return 0;
 }
