@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.html": "html",
+    "*.js": "javascript",
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "stack": "cpp",
+    "deque": "cpp"
+  }
+}
