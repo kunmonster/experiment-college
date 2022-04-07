@@ -11,7 +11,7 @@ class Stack {
   T* data;
   int m_size = 0;
   int length = 0;
-  int m_top = -1, m_bottom = 0;
+  int m_top = -1;
   Stack(int size = 0) {
     // init
     size = (size && size <= MAX_SIZE) ? size : MAX_SIZE;
@@ -22,6 +22,7 @@ class Stack {
   bool empty();
   bool push(T);
   bool pop();
+  bool destory();
   T top();
   ~Stack();
 };
@@ -67,6 +68,15 @@ template <typename T>
 T Stack<T>::top() {
   if (this->empty()) return NULL;
   return this->data[m_top];
+}
+
+template <typename T>
+bool Stack<T>::destory() {
+  this->length = 0;
+  this->m_top - 1;
+  delete this->data;
+  this->data = nullptr;
+  return true;
 }
 
 template <typename T>

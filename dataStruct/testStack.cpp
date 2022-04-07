@@ -19,5 +19,6 @@ int main() {
   s->pop();
   bool issuccess = s->pop();
   bool empt2 = s->empty();
+  bool ssss = s->destory();
   return 0;
 }
