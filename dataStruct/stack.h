@@ -12,11 +12,10 @@ class Stack {
   int m_size = 0;
   int length = 0;
   int m_top = -1;
-  Stack(int size = 0) {
+  Stack(const int size = 0) {
     // init
-    size = (size && size <= MAX_SIZE) ? size : MAX_SIZE;
-    this->m_size = size;
-    this->data = new T[size]{T(0)};
+    this->m_size = (size && size <= MAX_SIZE) ? size : MAX_SIZE;
+    this->data = new T[m_size]{T(0)};
   }
   bool full();
   bool empty();
@@ -67,7 +66,8 @@ bool Stack<T>::pop() {
 template <typename T>
 T Stack<T>::top() {
   if (this->empty()) return NULL;
-  return this->data[m_top];
+
+  return data[m_top];
 }
 
 template <typename T>
