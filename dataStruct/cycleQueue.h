@@ -45,6 +45,8 @@ class CycleQueue {
     }
     this->contain_arr[front++] = 0;
     --size;
+    ++front;
+    front %= max_size;
     return true;
   }
 
@@ -54,8 +56,6 @@ class CycleQueue {
       return NULL;
     }
     return this->contain_arr[front];
-    ++front;
-    front %= max_size;
   }
 };
 
