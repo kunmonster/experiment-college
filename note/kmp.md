@@ -124,3 +124,102 @@ KMP 算法
          1 & 其他情况
       \end{cases}$$
           
+    + 这里给出代码实现(cpp):
+    + + 使用更容易理解的字符串从一开始索引
+    + + +  
+          ```
+          void get_Next(String T, int * next){
+            int j = 1 ,k = 0; //这里j表示失配的位置,k表示j失配的时候需要滑动的位置,即k = next[j]
+            next[1] = 0;      //令next[1] = 0 : next也从
+            while(j<T.length()){
+                if(k == 0 || next[j] == next[k]){
+                  //当j发生失配的时候,查找其滑动的位置,发现next[k] == next[j]此时说明,最长前后缀长度加一了,
+                  那么当j发生失配的时候，只需要查找k+1位置就行
+                  ++j;
+                  ++k;
+                  next[j] = k;
+                }
+                else{
+                  //next[j] != next[k],此时还要匹配最长前后缀就得去T1~k-1找了即
+                  k = next[k];
+                }
+            }
+          }
+          ```
+    + + 正常索引版本(字符串和next数组都从0开始索引)
+    + + + 
+          ```
+          void get_Next(String T, int * next){
+            int j = 0 ,k = -1; //这里j表示失配的位置,k表示j失配的时候需要滑动的位置,即k = next[j]
+            next[0] = -1;      //令next[1] = 0 : next也从
+            while(j<T.length()){
+                if(k == -1 || next[j] == next[k]){
+                  //当j发生失配的时候,查找其滑动的位置,发现next[k] == next[j]此时说明,最长前后缀长度加一了,
+                  那么当j发生失配的时候，只需要查找k+1位置就行
+                  ++j;
+                  ++k;
+                  next[j] = k;
+                }
+                else{
+                  //next[j] != next[k],此时还要匹配最长前后缀就得去T1~k-1找了即
+                  k = next[k];
+                }
+            }
+          }
+          ```
+    + + 此时已经可以写出完整的kmp算法代码了
+    + + + 
+          ```
+          //这里索引均是从不开始
+          int Index(String S , String T ,int * next){
+            int i = 0,j = -1;
+            while(i < S.length() && j < T.length()){
+              if(j == -1 || S[i] == T[j]){
+                ++i;
+                ++j;
+              }
+              else{
+                j = next[j];
+              }
+            }
+            if(j >= T.length()){
+              return i-T.length();
+            }   
+          }
+          ```
+    + + 到这里kmp算法基本上已经算是掌握了,但是在实际运用中,还有优化的空间。如下例子：
+    + + + 
+            
+          | 主串 | a | a | a | <font color="red">b</font> | a | a | a | a | b |
+          | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+          | 模式 | a | a | a | <font color="red">a</font> | b |   |  |   |
+          | j | 1 | 2 | 3 | 4 | 5 |  |   |  |
+          | next\[j\] | 0 | 1 | 2 | 3 | 4 |
+          | nextval\[j\] | 0 | 0 | 0 | 0 | 4 |
+
+          可以看到上述第四个位置发生了失配现象，按照之前的做法，我们直接令j=next\[j\],当然这种做法正确，但是这里next\[j\]为3,又去查阅T\[3\]发现它与发生失配的第四个元素相等，那么将j滑到这里后，再与主串b比较，显然结果一样，那我们可将next优化为nextval数组，如图中的nextval数组，查询这个数组，发现当第二个位置失配的时候，这里直接滑到0，相当从主串的下一个位置开始比较,中间就省略了使用next数组的荣冗余比较步骤，可以在一定程度上提升效率
+
+    + + 代码实现
+    + + +
+          ```
+          void get_Next(String T, int * nextval){
+            int j = 0 ,k = -1; //这里j表示失配的位置,k表示j失配的时候需要滑动的位置,即k = next[j]
+            nextval[0] = -1;      //令next[1] = 0 : next也从
+            while(j<T.length()){
+                if(k == -1 || T[j] == T[k]){
+                  //当j发生失配的时候,查找其滑动的位置,发现next[k] == next[j]此时说明,最长前后缀长度加一了,
+                  那么当j发生失配的时候，只需要查找k+1位置就行
+                  ++j;
+                  ++k;
+                  if(T[j] != T[k]) nextval[j] = k;
+                  else nextval[j] = nextval[k];
+                }
+                else{
+                  //next[j] != next[k],此时还要匹配最长前后缀就得去T1~k-1找了即
+                  k = nextval[k];
+                }
+            }
+          }
+          ```      
+
+<h1>上述就是我对kmp的理解过程
