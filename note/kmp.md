@@ -132,7 +132,7 @@ KMP 算法
             int j = 1 ,k = 0; //这里j表示失配的位置,k表示j失配的时候需要滑动的位置,即k = next[j]
             next[1] = 0;      //令next[1] = 0 : next也从
             while(j<T.length()){
-                if(k == 0 || next[j] == next[k]){
+                if(k == 0 || T[j] == T[k]){
                   //当j发生失配的时候,查找其滑动的位置,发现next[k] == next[j]此时说明,最长前后缀长度加一了,
                   那么当j发生失配的时候，只需要查找k+1位置就行
                   ++j;
@@ -153,7 +153,7 @@ KMP 算法
             int j = 0 ,k = -1; //这里j表示失配的位置,k表示j失配的时候需要滑动的位置,即k = next[j]
             next[0] = -1;      //令next[1] = 0 : next也从
             while(j<T.length()){
-                if(k == -1 || next[j] == next[k]){
+                if(k == -1 || T[j] == T[k]){
                   //当j发生失配的时候,查找其滑动的位置,发现next[k] == next[j]此时说明,最长前后缀长度加一了,
                   那么当j发生失配的时候，只需要查找k+1位置就行
                   ++j;
@@ -170,9 +170,9 @@ KMP 算法
     + + 此时已经可以写出完整的kmp算法代码了
     + + + 
           ```
-          //这里索引均是从不开始
-          int Index(String S , String T ,int * next){
-            int i = 0,j = -1;
+          //这里索引均是从0开始
+          int Index_kmp(String S , String T ,int * next){
+            int i = -1,j = -1;
             while(i < S.length() && j < T.length()){
               if(j == -1 || S[i] == T[j]){
                 ++i;
