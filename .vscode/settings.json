@@ -31,6 +31,8 @@
     "thread": "cpp",
     "tuple": "cpp",
     "type_traits": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "cmath": "cpp",
+    "iostream": "cpp"
   }
 }
