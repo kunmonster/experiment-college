@@ -17,29 +17,29 @@ bool isLeapYear(int year) {
 
 void NextDay(int year, int month, int day) {
   // if (!isdigit(year)) {
-  //   cout << "å¹´ä»½è¾“å…¥å¼‚å¸¸" << endl;
+  //   cout << "Äê·ÝÊäÈëÒì³£" << endl;
   //   return;
   // } else if (!isdigit(month)) {
-  //   cout << "æœˆä»½è¾“å…¥å¼‚å¸¸" << endl;
+  //   cout << "ÔÂ·ÝÊäÈëÒì³£" << endl;
   //   return;
   // } else if (!isdigit(day)) {
-  //   cout << "æ—¥è¾“å…¥å¼‚å¸¸" << endl;
+  //   cout << "ÈÕÊäÈëÒì³£" << endl;
   //   return;
   // } else {
 
   if ((year < 1900) || (year > 2050)) {
-    cout << "å¹´ä»½è¾“å…¥éžæ³•" << endl;
+    cout << "Äê·ÝÊäÈë·Ç·¨" << endl;
     return;
   } else if ((month < 1) || (month > 12)) {
-    cout << "æœˆä»½è¾“å…¥éžæ³•" << endl;
+    cout << "ÔÂ·ÝÊäÈë·Ç·¨" << endl;
     return;
-  } else if ((day < 1) || (day  > 31)) {
-    cout << "æ—¥è¾“å…¥éžæ³•" << endl;
+  } else if ((day < 1) || (day > 31)) {
+    cout << "ÈÕÊäÈë·Ç·¨" << endl;
     return;
   } else {
     if (month != 2 && month != 12) {
       if (bigMonth[month]) {
-        //å¤§æœˆ
+        //´óÔÂ
         if (day == 31) {
           ++month;
           day = 1;
@@ -47,7 +47,7 @@ void NextDay(int year, int month, int day) {
           ++day;
         }
       } else {
-        //å°æœˆ
+        //Ð¡ÔÂ
         if (day == 30) {
           ++month;
           day = 1;
@@ -56,7 +56,7 @@ void NextDay(int year, int month, int day) {
         }
       }
     } else if (month == 12) {
-      //ä¸º12æœˆ
+      //Îª12ÔÂ
       if (day == 31) {
         ++year;
         month = 1;
@@ -65,9 +65,9 @@ void NextDay(int year, int month, int day) {
         ++day;
       }
     } else {
-      // 2æœˆ
+      // 2ÔÂ
       if (isLeapYear(year)) {
-        //é—°å¹´
+        //ÈòÄê
         if (day == 29) {
           ++month;
           day = 1;
