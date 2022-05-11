@@ -45,8 +45,8 @@ void MidOrder(Node<T>* root) {
 template <typename T>
 void PostOrder(Node<T>* root) {
   if (!root) return;
-  if (root->m_left) MidOrder(root->m_left);
-  if (root->m_right) MidOrder(root->m_right);
+  if (root->m_left) PostOrder(root->m_left);
+  if (root->m_right) PostOrder(root->m_right);
   cout << root->m_data << "\t";
 }
 
@@ -61,13 +61,12 @@ void LevelOrder(Node<T>* root) {
     tmp_q.pop();
     cout << temp->m_data << "\t";
     if (root->m_left) tmp_q.push(root->m_left);
-    if (root->right) tmp_q.push(root->m_right);
+    if (root->m_right) tmp_q.push(root->m_right);
   }
 }
 template <typename T, typename Node>
 class Tree {
  public:
-  friend class oprate;
   Node* m_root;
 
   Tree(Node* root = nullptr) : m_root(root) {}
@@ -90,17 +89,9 @@ class Tree {
           break;
       }
     }
-    preCreate(this->m_root);
+    this->generateTree();
   }
-  T data;
-  void preCreate(Node* root) {
-    if (cin >> data) {
-      root = new Node(data);
-      preCreate(root->m_left);
-      preCreate(root->m_right);
-    }
-    return;
-  }
+
   void generateTree() {
     if (this->m_root) {
       queue<Node*> tmp;
@@ -113,14 +104,35 @@ class Tree {
         delete cur;
       }
     }
+    this->m_root = new Node();
     preCreate(this->m_root);
-  
+  }
+  T data;
+  void preCreate(Node* root) {
+    cin >> data;
+    if (data == '#'){
+      root = nullptr;
+      return;
+    }
+    else {
+      root->m_data = data;
+      root->m_left = new Node();
+      preCreate(root->m_left);
+      root->m_right = new Node();
+      preCreate(root->m_right);
+    }
   }
 };
 
 int main() {
   Tree<char, Node<char>>* test = new Tree<char, Node<char>>();
   test->createTree();
-  
+  PreOrder(test->m_root);
+  cout<<endl;
+  MidOrder(test->m_root);
+  cout<<endl;
+  PostOrder(test->m_root);
+  cout<<endl;
+  LevelOrder(test->m_root);
   return 0;
 }
