@@ -60,8 +60,8 @@ void LevelOrder(Node<T>* root) {
   while ((!tmp_q.empty()) && (temp = tmp_q.front())) {
     tmp_q.pop();
     cout << temp->m_data << "\t";
-    if (root->m_left) tmp_q.push(root->m_left);
-    if (root->m_right) tmp_q.push(root->m_right);
+    if (temp->m_left) tmp_q.push(temp->m_left);
+    if (temp->m_right) tmp_q.push(temp->m_right);
   }
 }
 template <typename T, typename Node>
@@ -127,12 +127,16 @@ class Tree {
 int main() {
   Tree<char, Node<char>>* test = new Tree<char, Node<char>>();
   test->createTree();
+  cout<<"先序:";
   PreOrder(test->m_root);
   cout<<endl;
+  cout<<"中序:";
   MidOrder(test->m_root);
   cout<<endl;
+  cout<<"后序:";
   PostOrder(test->m_root);
   cout<<endl;
+  cout<<"层序:";
   LevelOrder(test->m_root);
   return 0;
   //over
