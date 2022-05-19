@@ -14,7 +14,11 @@ typedef struct TreeNode {
         m_rtag(rtag),
         m_lchild(lchild),
         m_rchild(rchild) {}
-  TreeNode* operator=(const TreeNode* root) {}
+  TreeNode* operator=(const TreeNode* root) {
+    TreeNode* res = new TreeNode(root->m_data, root->m_ltag, root->m_rtag,
+                                 root->m_lchild, root->m_rchild);
+    return res;
+  }
 } * ThreadTree;
 
 void PreOrder(const TreeNode* origin, TreeNode* newroot) {
@@ -63,7 +67,9 @@ void MidThreadTree(ThreadTree& root, ThreadTree& pre) {
 //先序构建线索二叉树
 void PreThreadTree(ThreadTree& root, ThreadTree& pre) {
   if (root != nullptr) {
+      bool tag = false;
     if (!root->m_lchild) {
+      tag = true;
       root->m_lchild = pre;
       root->m_ltag = true;
     }
@@ -72,8 +78,8 @@ void PreThreadTree(ThreadTree& root, ThreadTree& pre) {
       pre->m_rtag = true;
     }
     pre = root;
-    PreThreadTree(root->m_lchild, pre);
-    PreThreadTree(root->m_lchild, pre);
+    if(!tag)PreThreadTree(root->m_lchild, pre);
+    PreThreadTree(root->m_rchild, pre);
   }
 }
 //后序构建线索二叉树
@@ -96,8 +102,17 @@ void PostedThreadTree(ThreadTree& root, ThreadTree& pre) {
 }
 
 int main() {
+  //测试用例
+  //ABD##E##C#G##
   ThreadTree root;
   CreateTree(root);
+  ThreadTree pre = new TreeNode();
+  // MidThreadTree(root, pre);
 
+  PreThreadTree(root,pre);
+  // PostedThreadTree(root,pre);
+  //处理最后一个结点
+  pre->m_rchild = nullptr;
+  pre->m_rtag = true;
   return 0;
 }
