@@ -1,3 +1,8 @@
+/**
+ *fkj
+ * 二叉树的线索化(前序，中序，后序)，以及线索遍历
+ * 2022/5/7
+ * */
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -42,6 +47,8 @@ void CreateTree(ThreadTree& root) {
   }
 }
 
+//中序构建线索二叉树
+//最后一个结点是右下结点，需要处理
 void MidThreadTree(ThreadTree& root, ThreadTree& pre) {
   if (root != nullptr) {
     //中序需要先找到最左结点，初始时候pre应为一个空结点
@@ -65,10 +72,12 @@ void MidThreadTree(ThreadTree& root, ThreadTree& pre) {
 }
 
 //先序构建线索二叉树
+//最后一个结点是最右下结点,需要处理后继为空
 void PreThreadTree(ThreadTree& root, ThreadTree& pre) {
   if (root != nullptr) {
-      bool tag = false;
-    if (!root->m_lchild) {
+    bool tag = false;
+    if (root->m_lchild == nullptr) {
+      //看原来结点的左子树是否存在,注意若不存在,那么就不需要线索化左子树了，否则将会线索其前驱
       tag = true;
       root->m_lchild = pre;
       root->m_ltag = true;
@@ -78,22 +87,24 @@ void PreThreadTree(ThreadTree& root, ThreadTree& pre) {
       pre->m_rtag = true;
     }
     pre = root;
-    if(!tag)PreThreadTree(root->m_lchild, pre);
+    //需要判断原来的左子树是否存在，不存在就不能线索化左子树，否则将会线索其前驱结点
+    if (!tag) PreThreadTree(root->m_lchild, pre);
     PreThreadTree(root->m_rchild, pre);
   }
 }
 //后序构建线索二叉树
+//最后一个节点是root结点，不需要做额外处理
 void PostedThreadTree(ThreadTree& root, ThreadTree& pre) {
   if (root != nullptr) {
     //结点存在
     //找到后序的第一个的结点
     PostedThreadTree(root->m_lchild, pre);
     PostedThreadTree(root->m_rchild, pre);
-    if (root->m_lchild != nullptr) {
+    if (root->m_lchild == nullptr) {
       root->m_lchild = pre;
       root->m_ltag = 1;
     }
-    if (pre && pre->m_rchild != nullptr) {
+    if (pre && pre->m_rchild == nullptr) {
       pre->m_rchild = root;
       pre->m_rtag = 1;
     }
@@ -101,18 +112,25 @@ void PostedThreadTree(ThreadTree& root, ThreadTree& pre) {
   }
 }
 
+void Mid(ThreadTree& root, ThreadTree& pre) {
+  MidThreadTree(root, pre);
+  pre->m_rchild = nullptr;
+  pre->m_rtag = true;
+  pre = nullptr;
+}
+void Pre(ThreadTree& root, ThreadTree& pre) {
+  PreThreadTree(root, pre);
+  pre->m_rchild = nullptr;
+  pre->m_rtag = true;
+  pre = nullptr;
+}
+
 int main() {
   //测试用例
-  //ABD##E##C#G##
+  // ABD##E##C#G##
   ThreadTree root;
   CreateTree(root);
   ThreadTree pre = new TreeNode();
   // MidThreadTree(root, pre);
-
-  PreThreadTree(root,pre);
-  // PostedThreadTree(root,pre);
-  //处理最后一个结点
-  pre->m_rchild = nullptr;
-  pre->m_rtag = true;
   return 0;
 }
