@@ -23,6 +23,5 @@ void stright_insert_sort(int * arr,int len){
 int main(){
     int * arr = new int[10]{9,1,3,4,5,6,5,1,6,7};
     stright_insert_sort(arr,sizeof(arr) / sizeof(int));
-    cout<<sizeof(*(&arr));
     return 0;
 }
