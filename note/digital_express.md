@@ -8,7 +8,7 @@
 
     $ +1001 $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -1001 $
 
-    $ +0.1001 $ &nbsp;&nbsp;&nbsp;&nbsp;$ -0.1001 $
+    $ +0.1001 $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -0.1001 $
 <hr>
 
 <h2>原码</h2>
@@ -20,7 +20,7 @@
 
     <font color="red">$ 0 $ </font>$ ,1001 $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$ 1$ </font>$ ,1001 $
 
-    <font color="red">$ 0 $</font>$ .1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$ 1 $</font>$ .1001 $
+    <font color="red">$ 0 $</font>$ .1001 $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$ 1 $</font>$ .1001 $
 
 5.  原码可以反映出数的正负
 6.  根据原码定义，0有两种 表示
@@ -83,7 +83,7 @@ $ \because $
 $ 0 + X = X $且$ 0 -(-X) = X $      
 $ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font color="red"> $ X为自己的补数 $</font>
 
-又 $\ because $ 在上述推导中已经发现，$ X也为Y的补数 $
+又 $ \ because $ 在上述推导中已经发现，$ X也为Y的补数 $
 
 那么问题来了: <font color="red">$ 怎么分辨这X究竟代表谁的补数呢? $</font>
 
@@ -100,7 +100,7 @@ $ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font col
 
 +   已知上面的例子是模16的即    $ mod2^4 $ , 即<font color="red">真值有$ n=4 $位</font>
 +   补数其实是通过如下计算得到
-+   $ 2^{n+1} + 原数真值 $,即<font color="red"> $1\overbrace{0···0}^{(n+1)个} + X(真值) $</font>
++   $ 2^{n+1} + 原数真值 $,即<font color="red"> $ 1\overbrace{0···0}^{(n+1)个} + X(真值) $</font>
 +   如上例子:
 
 +   
@@ -116,11 +116,11 @@ $ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font col
 1.  > 整数:
     >   + <font color="red">$ mod2^{n} $</font>
     >   + 在字长为n+1位的时候,数值部分为n位(真值n位),这时候补码可以表示为:
-    >    $$ [X]补 = \begin{cases} 0,X & \text {$2^n-1 \geq X \geq 0$} \\ 2^{n+1}+X(真值) = 2^{n+1}-|X| &  \text{$0>X \geq -2^n$} \end{cases} $$
+    >    $$ [X]补 = \begin{cases} 0,X & \text {$ 2^n-1 \geq X \geq 0 $} \\ 2^{n+1}+X(真值) = 2^{n+1}-|X| &  \text{$ 0>X \geq -2^n $} \end{cases} $$
 
 2.  > 小数:
     >   + <font color="red">mod 2 = $ 2^1 $</font>
-    >   $$ [X]补= \begin{cases} X(真值) & \text {$ 1 \gt X \geq 0 $} \\ 2+X(真值)=2-|X| &  \text{$0>X \geq -1$} \end{cases} $$ 
+    >   $$ [X]补= \begin{cases} X(真值) & \text {$ 1 \gt X \geq 0 $} \\ 2+X(真值)=2-|X| &  \text{$ 0>X \geq -1 $} \end{cases} $$ 
     >   + <font color="red">mod 4 = $ 2^2 $</font>
     >   $$ [X]补= \begin{cases} X(真值) & \text {$ 1 \gt X \geq 0 $} \\ 4+X(真值)=4-|X| &  \text{$ 0>X \geq -1 $} \end{cases} $$
 
@@ -142,55 +142,55 @@ $ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font col
 #### 通过上述计算发现，补码0只有一种表示方式=====>  $ 0,\overbrace{0···0}^{n个} $, 那么补码$ 1,\overbrace{0···0}^{n个} $表示什么呢?我们,我们通过公式还原其真值:
 >   $ \because X(真值) = -(2^{n+1} - [X]补) $
 > 
->   $\therefore X(真值) = -(10\overbrace{0···0}^{n个}-1\overbrace{0···0}^{n个}) = -1\overbrace{0···0}^{n个} = -2^n$,所以其对应真值为-2^n
+>   $ \therefore X(真值) = -(10\overbrace{0···0}^{n个}-1\overbrace{0···0}^{n个}) = -1\overbrace{0···0}^{n个} = -2^n $,所以其对应真值为-2^n
 >
 > <font color="red">注意在计算的时候做的是普通的算术计算,不需要考虑补码的正负，这样才能算出来真值</font>
 
 ### 此时我们发现,在原码中，0有两种表示,在补码中0只有一种表示:
 ### <font color="red">假设为n+1位字长，一位符号位,n位数字位</font>
 1. 原码:
-   >    $+0=0, \overbrace{0···0}^{n个}$
+   >    $ +0=0, \overbrace{0···0}^{n个} $
    >
-   >    $-0=1, \overbrace{0···0}^{n个}$
+   >    $ -0=1, \overbrace{0···0}^{n个} $
 2. 补码:
-   >    $+0=0, \overbrace{0···0}^{n个}$
+   >    $ +0=0, \overbrace{0···0}^{n个} $
    > 
-   >    $+0=0, \overbrace{0···0}^{n个}$
+   >    $ +0=0, \overbrace{0···0}^{n个} $
 
-### 我们会发现补码的$1,\overbrace{0···0}^{n个}$用来表示真值的$-2^n$,而原码的$1,\overbrace{0···0}^{n}$用来表示$-0$
+### 我们会发现补码的$ 1,\overbrace{0···0}^{n个} $用来表示真值的$ -2^n $,而原码的$ 1,\overbrace{0···0}^{n} $用来表示$ -0 $
 
 <hr>
 
 ### 现在我们已知字长为n+1,符号位1位，数值位n位，原码和补码分别所能表示的真值范围
 
 1. 原码:
-    >  $1,\overbrace{1···1}^{n个}$ <font color="red">~</font> $1,\overbrace{0···0}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$0,\overbrace{0···0}^{n个}$ <font color="red">~</font> $0,\overbrace{1···1}^{n个}$
+    >  $ 1,\overbrace{1···1}^{n个} $ <font color="red">~</font> $ 1,\overbrace{0···0}^{n个} $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$ 0,\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 0,\overbrace{1···1}^{n个} $
     >
     >即n+1位字长，1位符号位的原码可表示真值X的范围为
     >
-    > $-(2^n-1) \leq X \leq -0$ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$0 \leq X \leq 2^n-1$
+    > $ -(2^n-1) \leq X \leq -0 $ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$ 0 \leq X \leq 2^n-1 $
 2. 补码：
-    >$1,\overbrace{0···0}^{n个}$ <font color="red">~</font> $1,\overbrace{1···1}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$0,\overbrace{0···0}^{n个}$ <font color="red">~</font> $0,\overbrace{1···1}^{n个}$
+    >$ 1,\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 1,\overbrace{1···1}^{n个} $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$ 0,\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 0,\overbrace{1···1}^{n个} $
     >
     >即n+1位字长，1位符号位的补码可表示真值X的范围为
     >
-    > $-2^n \leq X \leq 0$ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$0 \leq X \leq 2^n-1$
-3. 可以观察到，补码比原码 多表示了一个$-2^n$,因为补码0只有一种表示方法,而原码0有2中表示方法
+    > $ -2^n \leq X \leq 0 $ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$ 0 \leq X \leq 2^n-1 $
+3. 可以观察到，补码比原码 多表示了一个$ -2^n $,因为补码0只有一种表示方法,而原码0有2中表示方法
 
 ### 再看小数所能表示的范围
 
 1. 原码:
-   > $1.\overbrace{1···1}^{n个}$ <font color="red">~</font> $1.\overbrace{0···0}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$0.\overbrace{0···0}^{n个}$ <font color="red">~</font> $0.\overbrace{1···1}^{n个}$
+   > $ 1.\overbrace{1···1}^{n个} $ <font color="red">~</font> $ 1.\overbrace{0···0}^{n个} $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$ 0.\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 0.\overbrace{1···1}^{n个} $
    >
    >即n+1位字长，1位符号位的原码可表示真值X的范围为
    >
-   > $2^{-n}-1 \leq X \leq 0$ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$0 \leq X \leq 1-2^{-n}$
+   > $ 2^{-n}-1 \leq X \leq 0 $ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$ 0 \leq X \leq 1-2^{-n} $
 2. 补码:
-   > $1.\overbrace{0···0}^{n个}$ <font color="red">~</font> $1.\overbrace{1···1}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$0.\overbrace{0···0}^{n个}$ <font color="red">~</font> $0.\overbrace{1···1}^{n个}$
+   > $ 1.\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 1.\overbrace{1···1}^{n个} $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;$ 0.\overbrace{0···0}^{n个} $ <font color="red">~</font> $ 0.\overbrace{1···1}^{n个} $
    >
    >即n+1位字长，1位符号位的原码可表示真值X的范围为
    >
-   > $-1 \leq X \leq -2^{-n}$ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$0 \leq X \leq 1-2^{-n}$
+   > $ -1 \leq X \leq -2^{-n} $ &nbsp;&nbsp;&nbsp;&nbsp;   ~   &nbsp;&nbsp;&nbsp;&nbsp;$ 0 \leq X \leq 1-2^{-n} $
 3. 模2的小数的补码比原码所表示的真值多了个-1,这也是0的表示造成的
 
 
@@ -237,7 +237,7 @@ $ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font col
     > | 0,1010|+1010|0,1010|
     > | 0,0001|+0001|0,0001|
 
-我们发现从真值很难看出数的相对大小，移码就是将字长n+1的数,加上$2^n$，即将所有数在数轴上右移$2^n$个单位,这样就能直观的看出大小了,如下
+我们发现从真值很难看出数的相对大小，移码就是将字长n+1的数,加上$ 2^n $，即将所有数在数轴上右移$ 2^n $个单位,这样就能直观的看出大小了,如下
 >   
 +   > | 真值 | 移码 |
     > | :-:| :-:|
