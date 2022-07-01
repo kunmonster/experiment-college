@@ -6,9 +6,9 @@
 1.  含有正负号的数(能直观看出数的大小)
 2.  如:
 
-    $+1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -1001 $
+    $+1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$-1001$
 
-    $+0.1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -0.1001 $
+    $+0.1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$-0.1001$
 <hr>
 
 <h2>原码</h2>
@@ -18,7 +18,7 @@
 3.  对小数来说符号位后面就是小数点  
 4.  如:
 
-    <font color="red">$0$ </font>$,1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$1$ </font>$,1001$
+    <font color="red">$0$</font>$,1001$ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$1$ </font>$,1001$
 
     <font color="red">$0$</font>$.1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$1$</font>$.1001$
 
@@ -92,9 +92,9 @@ $\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即<font color="red
 
 ###  这时候我们引入符号位,若真值为n位,那么加上符号位过后将变成n+1
 
-+   我们令 $ 1,1010 $ 表示$ Y(-0110) $的补数
-+   再令$ 0,1010 $表示$ X(1010) $的补数
-+   此时我们已经能分辨$ X,Y $的补数，那么这两个补数是怎么来的?
++   我们令 $1,1010$ 表示$Y(-0110)$的补数
++   再令$0,1010$表示$X(1010)$的补数
++   此时我们已经能分辨$X,Y$的补数，那么这两个补数是怎么来的?
 
 ### 如下:
 
@@ -116,13 +116,13 @@ $\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即<font color="red
 1.  > 整数:
     >   + <font color="red">$mod2^{n}$</font>
     >   + 在字长为n+1位的时候,数值部分为n位(真值n位),这时候补码可以表示为:
-    >    $$ [X]补 = \begin{cases} 0,X & \text {$2^n-1 \geq X \geq 0$} \\ 2^{n+1}+X(真值) = 2^{n+1}-|X| &  \text{$0>X \geq -2^n$} \end{cases} $$
+    >    $$ [X]补 = \begin{cases} 0,X & \text {$2^n-1 \geq X \geq 0$} \\ 2^{n+1}+X(真值) = 2^{n+1}-|X| &  \text{$0>X \geq -2^n$} \end{cases}$$
 
 2.  > 小数:
     >   + <font color="red">mod 2 = $2^1$</font>
-    >   $$ [X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 2+X(真值)=2-|X| &  \text{$0>X \geq -1$} \end{cases}$$ 
+    >   $$[X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 2+X(真值)=2-|X| &  \text{$0>X \geq -1$} \end{cases}$$ 
     >   + <font color="red">mod 4 = $2^2$</font>
-    >   $$ [X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 4+X(真值)=4-|X| &  \text{$0>X \geq -1$} \end{cases} $$
+    >   $$[X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 4+X(真值)=4-|X| &  \text{$0>X \geq -1$} \end{cases}$$
 
 
 <br> 
@@ -135,7 +135,7 @@ $\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即<font color="red
    > 
     10 $\overbrace{0···0}^{n个}$
 
-\-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;$\overbrace{0···0}^{n个}$
+\-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;$\overbrace{0···0}^{n个}$
  
 \-----------------<br>
 &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10,$\overbrace{0···0}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;由于字长只有n+1位,最高位的1丢掉，变成<font color="red">$0,\overbrace{0···0}^{n个}$</font>
