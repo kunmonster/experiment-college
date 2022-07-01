@@ -6,9 +6,9 @@
 1.  含有正负号的数(能直观看出数的大小)
 2.  如:
 
-    $ +1001 $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -1001 $
+    $ +1001 $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -1001 $
 
-    $ +0.1001 $&nbsp;&nbsp;&nbsp;&nbsp; $ -0.1001 $
+    $ +0.1001 $ &nbsp;&nbsp;&nbsp;&nbsp;$ -0.1001 $
 <hr>
 
 <h2>原码</h2>
@@ -18,9 +18,9 @@
 3.  对小数来说符号位后面就是小数点  
 4.  如:
 
-    <font color="red">$0$</font>$,1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$1$</font>$,1001$
+    <font color="red">$ 0 $ </font>$ ,1001 $ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$ 1$ </font>$ ,1001 $
 
-    <font color="red">$0$</font>$.1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$1$</font>$.1001$
+    <font color="red">$ 0 $</font>$ .1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">$ 1 $</font>$ .1001 $
 
 5.  原码可以反映出数的正负
 6.  根据原码定义，0有两种 表示
@@ -77,30 +77,30 @@
 
 经过上述计算后，我们发现妙不可言，但是接下来出现新的问题：
 
-我们令 $X=1010 > 0$ , $Y=-0110$  我们可以进行如下推导:
+我们令 $ X=1010 > 0 $ , $ Y=-0110 $  我们可以进行如下推导:
 
-$\because$
-$0 + X = X$且$0 -(-X) = X$      
-$\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即 <font color="red"> $X为自己的补数$</font>
+$ \because $
+$ 0 + X = X $且$ 0 -(-X) = X $      
+$ \therefore $可以认为$ X $为$ -(-X) $的在模16下的补数,即 <font color="red"> $ X为自己的补数 $</font>
 
-又 $\because$ 在上述推导中已经发现，$X也为Y的补数$
+又 $\ because $ 在上述推导中已经发现，$ X也为Y的补数 $
 
-那么问题来了: <font color="red">$怎么分辨这X究竟代表谁的补数呢?$</font>
+那么问题来了: <font color="red">$ 怎么分辨这X究竟代表谁的补数呢? $</font>
 
 <br>
 
 
 ###  这时候我们引入符号位,若真值为n位,那么加上符号位过后将变成n+1
 
-+   我们令 $1,1010$ 表示$Y(-0110)$的补数
-+   再令$0,1010$表示$X(1010)$的补数
-+   此时我们已经能分辨$X,Y$的补数，那么这两个补数是怎么来的?
++   我们令 $ 1,1010 $ 表示$ Y(-0110) $的补数
++   再令$ 0,1010 $表示$ X(1010) $的补数
++   此时我们已经能分辨$ X,Y $的补数，那么这两个补数是怎么来的?
 
 ### 如下:
 
-+   已知上面的例子是模16的即    $mod2^4$ , 即<font color="red">真值有$n=4$位</font>
++   已知上面的例子是模16的即    $ mod2^4 $ , 即<font color="red">真值有$ n=4 $位</font>
 +   补数其实是通过如下计算得到
-+   $2^{n+1} + 原数真值$,即<font color="red">$1\overbrace{0···0}^{(n+1)个} + X(真值)$</font>
++   $ 2^{n+1} + 原数真值 $,即<font color="red"> $1\overbrace{0···0}^{(n+1)个} + X(真值) $</font>
 +   如上例子:
 
 +   
@@ -114,15 +114,15 @@ $\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即 <font color="re
 ### 经过上述推导我们可以得出补码的一般公式:
 
 1.  > 整数:
-    >   + <font color="red">$mod2^{n}$</font>
+    >   + <font color="red">$ mod2^{n} $</font>
     >   + 在字长为n+1位的时候,数值部分为n位(真值n位),这时候补码可以表示为:
     >    $$ [X]补 = \begin{cases} 0,X & \text {$2^n-1 \geq X \geq 0$} \\ 2^{n+1}+X(真值) = 2^{n+1}-|X| &  \text{$0>X \geq -2^n$} \end{cases} $$
 
 2.  > 小数:
-    >   + <font color="red">mod 2 = $2^1$</font>
-    >   $$ [X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 2+X(真值)=2-|X| &  \text{$0>X \geq -1$} \end{cases} $$ 
-    >   + <font color="red">mod 4 = $2^2$</font>
-    >   $$ [X]补= \begin{cases} X(真值) & \text {$1 \gt X \geq 0$} \\ 4+X(真值)=4-|X| &  \text{$0>X \geq -1$} \end{cases} $$
+    >   + <font color="red">mod 2 = $ 2^1 $</font>
+    >   $$ [X]补= \begin{cases} X(真值) & \text {$ 1 \gt X \geq 0 $} \\ 2+X(真值)=2-|X| &  \text{$0>X \geq -1$} \end{cases} $$ 
+    >   + <font color="red">mod 4 = $ 2^2 $</font>
+    >   $$ [X]补= \begin{cases} X(真值) & \text {$ 1 \gt X \geq 0 $} \\ 4+X(真值)=4-|X| &  \text{$ 0>X \geq -1 $} \end{cases} $$
 
 
 <br> 
@@ -130,17 +130,17 @@ $\therefore$可以认为$X$为$-(-X)$的在模16下的补数,即 <font color="re
 ### 注意:
 #### 经过上面推导我们已经知道了补码的公式,现在看看补码中0的表示,带入上式
 1. >  整数(字长n+1位):
-   >  + $$ [X]补= \begin{cases} 0,\overbrace{0···0}^{n个} & \text {$X = +0$} \\  0,\overbrace{0···0}^{(n)个}  &  \text{$X= -0$} \end{cases}
+   >  + $$ [X]补= \begin{cases} 0,\overbrace{0···0}^{n个} & \text {$ X = +0 $} \\  0,\overbrace{0···0}^{(n)个}  &  \text{$ X= -0 $} \end{cases}
    >  + 计算过程如下:
    > 
-    10 $\overbrace{0···0}^{n个}$
+    10 $ \overbrace{0···0}^{n个} $
 
- \-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; $\overbrace{0···0}^{n个}$
+ \-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; $ \overbrace{0···0}^{n个} $
  
 \-----------------<br>
-&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10,$\overbrace{0···0}^{n个}$&nbsp;&nbsp;&nbsp;&nbsp;由于字长只有n+1位,最高位的1丢掉，变成<font color="red">$0,\overbrace{0···0}^{n个}$</font>
-#### 通过上述计算发现，补码0只有一种表示方式=====>  $0,\overbrace{0···0}^{n个}$, 那么补码$1,\overbrace{0···0}^{n个}$表示什么呢?我们,我们通过公式还原其真值:
->   $\because X(真值) = -(2^{n+1} - [X]补)$
+&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;10,$ \overbrace{0···0}^{n个} $&nbsp;&nbsp;&nbsp;&nbsp;由于字长只有n+1位,最高位的1丢掉，变成<font color="red">$ 0,\overbrace{0···0}^{n个} $</font>
+#### 通过上述计算发现，补码0只有一种表示方式=====>  $ 0,\overbrace{0···0}^{n个} $, 那么补码$ 1,\overbrace{0···0}^{n个} $表示什么呢?我们,我们通过公式还原其真值:
+>   $ \because X(真值) = -(2^{n+1} - [X]补) $
 > 
 >   $\therefore X(真值) = -(10\overbrace{0···0}^{n个}-1\overbrace{0···0}^{n个}) = -1\overbrace{0···0}^{n个} = -2^n$,所以其对应真值为-2^n
 >
