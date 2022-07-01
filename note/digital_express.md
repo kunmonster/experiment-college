@@ -6,9 +6,9 @@
 1.  含有正负号的数(能直观看出数的大小)
 2.  如:
 
-    $+1001$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$-1001$
+    $ +1001 $&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$ -1001 $
 
-    $+0.1001$&nbsp;&nbsp;&nbsp;&nbsp;$-0.1001$
+    $ +0.1001 $&nbsp;&nbsp;&nbsp;&nbsp; $ -0.1001 $
 <hr>
 
 <h2>原码</h2>
