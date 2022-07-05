@@ -33,6 +33,7 @@
     "type_traits": "cpp",
     "valarray": "cpp",
     "cmath": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "iosfwd": "cpp"
   }
 }
