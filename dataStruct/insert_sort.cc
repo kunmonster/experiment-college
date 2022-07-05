@@ -76,6 +76,8 @@ void binary_insert_sort(Element<T> *arr, int len) {
         else
           low = mid + 1;
       }
+      //插入位置为high+1
+      //从i的前一个位置开始需要将插入位置开始的数都往后移
       for (j = (i - 1); j >= (high + 1); --j) arr[j + 1] = arr[j];
       arr[high + 1] = guard;
     }
@@ -84,13 +86,15 @@ void binary_insert_sort(Element<T> *arr, int len) {
 
 /**
  * @brief  希尔排序
- * @tparam T 
- * @param arr 
- * @param len 
+ * @tparam T
+ * @param arr
+ * @param len
  */
-template<typename T>
-void shell_sort(Element<T> * arr , int len){
-
+template <typename T>
+void shell_sort(Element<T> *arr, int len) {
+  for (int dk = n / 2; dk >= 1; dk /= 2) {
+    
+  }
 }
 
 int main() {
