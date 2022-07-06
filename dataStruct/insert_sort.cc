@@ -92,19 +92,27 @@ void binary_insert_sort(Element<T> *arr, int len) {
  */
 template <typename T>
 void shell_sort(Element<T> *arr, int len) {
-  for (int dk = n / 2; dk >= 1; dk /= 2) {
-    
+  if (len <= 1) return;
+  Element<T> guard;
+  int dk, i, j;
+  for (dk = len / 2; dk >= 1; dk /= 2) {
+    for (i = dk; i < len; ++i) {
+      if (arr[i] < arr[i - dk]) {
+        guard = arr[i];
+        for (j = i - dk; j >= 0 && arr[j] > guard; j -= dk) arr[j + dk] = arr[j];
+        arr[j + dk] = guard;
+      }
+    }
   }
 }
-
 int main() {
-  Element<char> *arr = new Element<char>[10] {
-    'A', 'C', 'a', 'C', 'b', 't', 'f', 'B', 'X', 'e'
-  };
-  binary_insert_sort(arr, 10);
+  Element<int> *arr =
+      new Element<int>[10] { 49, 38, 65, 97, 76, 13, 27, 49, 55, 4 };
+  shell_sort(arr, 10);
+  // binary_insert_sort(arr, 10);
   //   stright_insert_sort(arr, 10);
   for (int i = 0; i <= 9; i++) {
-    cout << *(arr + i);
+    cout << *(arr + i) << "\t";
   }
   return 0;
 }
