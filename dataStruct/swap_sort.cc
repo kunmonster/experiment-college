@@ -30,7 +30,7 @@ void bubble_sort(Element<T>* arr, int len) {
 }
 
 /**
- * @brief 用于递归快排得到每次划分的位置
+ * @brief 用于快排每次找到划分位置(基准元素的最终位置)
  * @tparam T
  * @param arr
  * @param left
@@ -70,11 +70,50 @@ void quick_sort(Element<T>* arr, int low, int high) {
   return;
 }
 
+/**
+ * @brief 快排非递归版本
+ * @tparam T
+ * @param arr
+ * @param len
+ */
+template <typename T>
+void quick_sort_non_recur(Element<T>* arr, int low, int high) {
+  if (low < high) {
+    stack<T> partition_stk;
+    int partition_val = partition(arr, low, high);
+    if (partition_val - 1 > low) {
+      partition_stk.push(low);
+      partition_stk.push(partition_val - 1);
+    }
+    if (partition_val + 1 < high) {
+      partition_stk.push(partition_val + 1);
+      partition_stk.push(high);
+    }
+    while (!partition_stk.empty()) {
+      //划分栈不为空
+      int right = partition_stk.top();
+      partition_stk.pop();
+      int left = partition_stk.top();
+      partition_stk.pop();
+
+      int new_partition_val = partition(arr, left, right);
+      if (new_partition_val - 1 > left) {
+        partition_stk.push(left);
+        partition_stk.push(new_partition_val - 1);
+      }
+      if (new_partition_val + 1 < right) {
+        partition_stk.push(new_partition_val + 1);
+        partition_stk.push(right);
+      }
+    }
+  }
+}
+
 int main() {
   Element<int>* arr =
       new Element<int>[10] { 49, 38, 65, 97, 76, 13, 27, 49, 55, 4 };
   //   bubble_sort(arr, 10);
-  quick_sort(arr, 0, 9);
+  quick_sort_non_recur(arr, 0, 9);
   for (int i = 0; i <= 9; i++) {
     cout << *(arr + i) << "\t";
   }
