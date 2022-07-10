@@ -1,33 +1,6 @@
 #include <bits/stdc++.h>
+#include "element.h"
 using namespace std;
-
-template <class T>
-class Element;
-
-template <class T>
-std::ostream &operator<<(std::ostream &, const Element<T> &);
-
-template <class T>
-class Element {
-  friend std::ostream &operator<< <>(std::ostream &, const Element<T> &);
-
- private:
-  T m_data;
-
- public:
-  Element(){};
-  Element(T p_data) : m_data(p_data) {}
-  bool operator<(const Element &a) { return this->m_data < a.m_data; }
-  bool operator==(const Element &a) { return this->m_data == a.m_data; }
-  bool operator>(const Element &a) { return this->m_data > a.m_data; }
-  bool operator<=(const Element &a) { return this->m_data <= a.m_data; }
-  bool operator>=(const Element &a) { return this->m_data >= a.m_data; }
-};
-template <class T>
-std::ostream &operator<<(std::ostream &os, const Element<T> &a) {
-  os << a.m_data;
-  return os;
-}
 
 /**
  * @brief 直接插入排序(升序)
@@ -99,12 +72,14 @@ void shell_sort(Element<T> *arr, int len) {
     for (i = dk; i < len; ++i) {
       if (arr[i] < arr[i - dk]) {
         guard = arr[i];
-        for (j = i - dk; j >= 0 && arr[j] > guard; j -= dk) arr[j + dk] = arr[j];
+        for (j = i - dk; j >= 0 && arr[j] > guard; j -= dk)
+          arr[j + dk] = arr[j];
         arr[j + dk] = guard;
       }
     }
   }
 }
+
 int main() {
   Element<int> *arr =
       new Element<int>[10] { 49, 38, 65, 97, 76, 13, 27, 49, 55, 4 };
