@@ -33,8 +33,8 @@ void bubble_sort(Element<T>* arr, int len) {
  * @brief 用于快排每次找到划分位置(基准元素的最终位置)
  * @tparam T
  * @param arr
- * @param left
- * @param right
+ * @param left 划分的起始位置
+ * @param right 划分的结束位置
  * @return int
  */
 template <typename T>
@@ -53,8 +53,8 @@ int partition(Element<T>* arr, int left, int right) {
 /**
  * @brief 快排_递归版
  * @param arr
- * @param low
- * @param high
+ * @param low 排序的开始位置
+ * @param high 排序的结束位置
  * @return
  */
 template <typename T>
@@ -73,8 +73,8 @@ void quick_sort(Element<T>* arr, int low, int high) {
 /**
  * @brief 快排非递归版本
  * @tparam T
- * @param arr
- * @param len
+ * @param arr 关键字序列
+ * @param len 序列长度
  */
 template <typename T>
 void quick_sort_non_recur(Element<T>* arr, int low, int high) {
