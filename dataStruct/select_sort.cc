@@ -24,8 +24,7 @@ void simple_select_sort(Element<T>* arr, int len) {
 }
 
 /**
- * @brief Create a max heap object
- * 根据序列创建大根堆
+ * @brief 根据关键字序列创建大根堆
  * @tparam T
  * @param arr
  * @param len
@@ -33,7 +32,8 @@ void simple_select_sort(Element<T>* arr, int len) {
 template <typename T>
 void create_max_heap(Element<T>* arr, int len) {
   if (len <= 1) return;
-  int cur = len / 2 - 1;
+  //从最后一个子树开始调整
+  int cur = (len - 1) / 2;
   while (cur >= 0) {
     adjust_map_heap(arr, cur, len);
     --cur;
@@ -52,9 +52,9 @@ void create_max_heap(Element<T>* arr, int len) {
 template <typename T>
 void adjust_map_heap(Element<T>* arr, int root_index, int len) {
   Element<T> root = arr[root_index];
-  for (int i = root_index * 2; i < len; i *= 2) {
-    //寻找直接子元素最大的
-    if (i < len - 1 && arr[i] < arr[i + 1]) ++i;
+  for (int i = root_index * 2 + 1; i < len; i = i * 2 + 1) {
+    //寻找直接子元素最大的,i是左子树的根,若i已经等于len-1了说明没有右子树,i已经在最后一个位置了
+    if ((i < (len - 1)) && arr[i] < arr[i + 1]) ++i;
     //最大的都小于根关键字,此时结束寻找
     if (root >= arr[i])
       break;
@@ -68,13 +68,37 @@ void adjust_map_heap(Element<T>* arr, int root_index, int len) {
   arr[root_index] = root;
 }
 
-int main() {
-  Element<int>* arr =
-      new Element<int>[10] { 49, 38, 65, 97, 76, 13, 27, 49, 55, 4 };
-  // simple_select_sort(arr, 10);
-  create_max_heap(arr, 10);
-  for (int i = 0; i <= 9; i++) {
-    cout << *(arr + i) << "\t";
+/**
+ * @brief
+ * 在大顶堆中加入新的元素
+ * @tparam T
+ * @param arr
+ * @param len
+ * @param element
+ */
+template <typename T>
+void add_element_in_max_heap(Element<T>* arr, int len, Element<T>& element) {}
+
+template <typename T>
+void head_sort(Element<T>* arr, int len) {
+  //建立初始堆
+  create_max_heap(arr, len);
+  //进行i-1趟,每一趟找到最大的元素,然后与最后一个元素交换(其实已经将最后一个元素earse了,这里我们使用索引限制)
+  //再调整(自上而下,因为已经所有子树保持最大堆结构,只需向下寻找)
+  for (int i = len - 1; i >= 0; --i) {
+    cout << arr[0] << "\t";
+    swap(arr[i], arr[0]);
+    adjust_map_heap(arr, 0, i );
   }
+}
+
+int main() {
+  Element<int>* arr = new Element<int>[10] { 53, 17, 78, 9, 45, 65, 87, 32 };
+  // simple_select_sort(arr, 10);
+  // create_max_heap(arr, 8);
+  head_sort(arr,8);
+  // for (int i = 0; i <= 7; i++) {
+  //   cout << *(arr + i) << "\t";
+  // }
   return 0;
 }
