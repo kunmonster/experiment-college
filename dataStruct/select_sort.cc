@@ -1,4 +1,16 @@
+/**
+ * @file select_sort.cc
+ * @author kkmonster
+ * @brief
+ * @version 0.1
+ * @date 2022-07-13
+ * @details 因为堆排序的时候有插入操作,所以在堆排序的时候使用vector
+ *
+ */
+
 #include <bits/stdc++.h>
+
+#include <vector>
 
 #include "element.h"
 using namespace std;
@@ -30,7 +42,7 @@ void simple_select_sort(Element<T>* arr, int len) {
  * @param len
  */
 template <typename T>
-void create_max_heap(Element<T>* arr, int len) {
+void create_max_heap(vector<Element<T>>& arr, int len) {
   if (len <= 1) return;
   //从最后一个子树开始调整
   int cur = (len - 1) / 2;
@@ -50,7 +62,7 @@ void create_max_heap(Element<T>* arr, int len) {
  * @param len
  */
 template <typename T>
-void adjust_map_heap(Element<T>* arr, int root_index, int len) {
+void adjust_map_heap(vector<Element<T>>& arr, int root_index, int len) {
   Element<T> root = arr[root_index];
   for (int i = root_index * 2 + 1; i < len; i = i * 2 + 1) {
     //寻找直接子元素最大的,i是左子树的根,若i已经等于len-1了说明没有右子树,i已经在最后一个位置了
@@ -73,32 +85,56 @@ void adjust_map_heap(Element<T>* arr, int root_index, int len) {
  * 在大顶堆中加入新的元素
  * @tparam T
  * @param arr
- * @param len
+ * @param len 当前堆的长度
  * @param element
  */
 template <typename T>
-void add_element_in_max_heap(Element<T>* arr, int len, Element<T>& element) {}
+void insert_element_in_max_heap(vector<Element<T>>& arr, int len,
+                                Element<T>& element) {
+  arr.push_back(element);
+  create_max_heap(arr, len + 1);
+}
 
+/**
+ * @brief
+ * 堆排序,初始化堆,进行n趟的排序,每一趟先输出最大的元素,然后把最大的元素移到末尾,然后调整
+ * @tparam T
+ * @param arr
+ * @param len
+ */
 template <typename T>
-void head_sort(Element<T>* arr, int len) {
+void head_sort(vector<Element<T>>& arr) {
   //建立初始堆
+  int len = arr.size();
   create_max_heap(arr, len);
   //进行i-1趟,每一趟找到最大的元素,然后与最后一个元素交换(其实已经将最后一个元素earse了,这里我们使用索引限制)
   //再调整(自上而下,因为已经所有子树保持最大堆结构,只需向下寻找)
   for (int i = len - 1; i >= 0; --i) {
-    cout << arr[0] << "\t";
+    auto temp = arr[0];
+    cout << temp << "\t";
     swap(arr[i], arr[0]);
-    adjust_map_heap(arr, 0, i );
+    adjust_map_heap(arr, 0, i);
   }
 }
 
 int main() {
   Element<int>* arr = new Element<int>[10] { 53, 17, 78, 9, 45, 65, 87, 32 };
-  // simple_select_sort(arr, 10);
-  // create_max_heap(arr, 8);
-  head_sort(arr,8);
-  // for (int i = 0; i <= 7; i++) {
-  //   cout << *(arr + i) << "\t";
-  // }
+  vector<Element<int>> vec_arr;
+  for (int i = 0; i < 8; i++) {
+    vec_arr.push_back(arr[i]);
+  }
+  create_max_heap(vec_arr, 8);
+    for (auto item : vec_arr) {
+    cout << item << "\t";
+  }
+  cout<<endl;
+  Element<int> new_ele = {100};
+  insert_element_in_max_heap(vec_arr, 8, new_ele);
+
+  for (auto item : vec_arr) {
+    cout << item << "\t";
+  }
+  // head_sort(vec_arr);
+
   return 0;
 }
