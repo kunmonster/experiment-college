@@ -37,11 +37,14 @@ void bubble_sort(Element<T>* arr, int len) {
  * @param right 划分的结束位置
  * @return int
  */
+
+
+int count = 0;
 template <typename T>
 int partition(Element<T>* arr, int left, int right) {
   Element<T> base = arr[left];
   while (left < right) {
-    while (left < right && arr[right] >= base) --right;
+    while (left < right && arr[right] >= base)  --right;
     arr[left] = arr[right];
     while (left < right && arr[left] <= base) ++left;
     arr[right] = arr[left];

@@ -47,7 +47,7 @@ void create_max_heap(vector<Element<T>>& arr, int len) {
   //从最后一个子树开始调整
   int cur = (len - 1) / 2;
   while (cur >= 0) {
-    adjust_map_heap(arr, cur, len);
+    adjust_max_heap(arr, cur, len);
     --cur;
   }
 }
@@ -62,7 +62,7 @@ void create_max_heap(vector<Element<T>>& arr, int len) {
  * @param len
  */
 template <typename T>
-void adjust_map_heap(vector<Element<T>>& arr, int root_index, int len) {
+void adjust_max_heap(vector<Element<T>>& arr, int root_index, int len) {
   Element<T> root = arr[root_index];
   for (int i = root_index * 2 + 1; i < len; i = i * 2 + 1) {
     //寻找直接子元素最大的,i是左子树的根,若i已经等于len-1了说明没有右子树,i已经在最后一个位置了
@@ -72,7 +72,7 @@ void adjust_map_heap(vector<Element<T>>& arr, int root_index, int len) {
       break;
     else {
       arr[root_index] = arr[i];
-      //用较大的子关键字替换根位置的关键字,但是不能直接把根关键字放到改位置,因为可能破坏子树的大根堆结构
+      //用较大的子关键字替换根位置的关键字,但是不能直接把根关键字放到该位置,因为可能破坏子树的大根堆结构
       //这时候需要继续在这个子树向下调整,最后找到放入根元素的位置
       root_index = i;
     }
@@ -106,15 +106,41 @@ template <typename T>
 void head_sort(vector<Element<T>>& arr) {
   //建立初始堆
   int len = arr.size();
-  create_max_heap(arr, len);
+  create_min_heap(arr, len);
   //进行i-1趟,每一趟找到最大的元素,然后与最后一个元素交换(其实已经将最后一个元素earse了,这里我们使用索引限制)
   //再调整(自上而下,因为已经所有子树保持最大堆结构,只需向下寻找)
   for (int i = len - 1; i >= 0; --i) {
     auto temp = arr[0];
     cout << temp << "\t";
     swap(arr[i], arr[0]);
-    adjust_map_heap(arr, 0, i);
+    adjust_min_heap(arr, 0, i);
   }
+}
+
+template <typename T>
+void create_min_heap(vector<Element<T>>& _arr,int len) {
+  if (len <= 1) return;
+  int i = (len - 1) / 2;
+  while (i >= 0) {
+    adjust_min_heap(_arr, i,len);
+    --i;
+  }
+}
+
+template <typename T>
+void adjust_min_heap(vector<Element<T>>& _arr, int root_index,int len) {
+
+  Element<T> root = _arr[root_index];
+  for (int i = 2 * root_index + 1; i < len; i = i * 2 + 1) {
+    if ((i < len - 1) && (_arr[i] > _arr[i + 1])) ++i;
+    if (_arr[root_index] <= _arr[i])
+      break;
+    else {
+      _arr[root_index] = _arr[i];
+      root_index = i;
+    }
+  }
+  _arr[root_index] = root;
 }
 
 int main() {
@@ -123,17 +149,19 @@ int main() {
   for (int i = 0; i < 8; i++) {
     vec_arr.push_back(arr[i]);
   }
-  create_max_heap(vec_arr, 8);
-    for (auto item : vec_arr) {
-    cout << item << "\t";
-  }
-  cout<<endl;
-  Element<int> new_ele = {100};
-  insert_element_in_max_heap(vec_arr, 8, new_ele);
-
+  create_min_heap(vec_arr,8);
   for (auto item : vec_arr) {
     cout << item << "\t";
   }
+  cout<<endl;
+  head_sort(vec_arr);
+  // cout << endl;
+  // Element<int> new_ele = {100};
+  // insert_element_in_max_heap(vec_arr, 8, new_ele);
+
+  // for (auto item : vec_arr) {
+  //   cout << item << "\t";
+  // }
   // head_sort(vec_arr);
 
   return 0;
