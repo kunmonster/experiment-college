@@ -36,6 +36,7 @@
     "iostream": "cpp",
     "iosfwd": "cpp",
     "limits": "cpp",
-    "sstream": "cpp"
+    "sstream": "cpp",
+    "new": "cpp"
   }
 }

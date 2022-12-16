@@ -31,7 +31,7 @@ LinkList create_LinklistWithoutHead(int n){
     return head->next;
 }
 
-LinkList create_LinklistWittHead(int n){
+LinkList create_LinklistWithHead(int n){
     struct node * head = new node(-1);
     struct node * rear = head;
     if(n == 0) return nullptr;
@@ -46,7 +46,7 @@ LinkList create_LinklistWittHead(int n){
 }
 
 void print_List(LinkList  head){
-    if(!head || head->data == -1)   cout<<endl<<"list is empty!";
+    if(!head ||!head->next)   {cout<<endl<<"list is empty!"; return;}
     while(head){
         if(head->next)
         cout<<head->data<<"->";
