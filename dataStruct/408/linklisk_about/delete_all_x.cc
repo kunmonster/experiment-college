@@ -178,8 +178,8 @@ void delete_Repeat(LinkList& head) {
  * 9.将两个升序链表合并为一个逆序的降序链表，使用原来的节点(不能创建新节点)(无头节点)
  * 解法一:先合并升序链表,再反转
  */
-node * merge_TList_Reverse(LinkList& l1, LinkList& l2) {
-  node  * res = new node();
+node* merge_TList_Reverse(LinkList& l1, LinkList& l2) {
+  node* res = new node();
   while (l1 && l2) {
     if (l1->data > l2->data) {
       auto temp = l2->next;
@@ -225,12 +225,43 @@ node * merge_TList_Reverse(LinkList& l1, LinkList& l2) {
   return res;
 }
 
+/**
+ * 删除链表中的重复节点并保留最后一个
+ */
+void delete_repeat_remainLast(LinkList& head) {
+  if (!head) return;
+  auto cur = head;
+  // auto res = new node (-1,cur);
+  while (cur) {
+    auto temp = cur->next;
+    node* slow = cur;
+    node * pri_1 = new node(-1,slow);
+    node* fast = cur->next;
+    node* pri_2 = slow;
+    while (fast) {
+      if (fast->data == slow->data) {
+        // 删除slow
+        pri_1->next = slow->next;
+        delete slow;
+        slow = fast;
+        pri_1 = pri_2;
+      }
+      pri_2 = fast;
+      fast = fast->next;
+    }
+    cur  = temp;
+  }
+  // head = res->next;
+
+  
+}
+
 int main() {
-  auto nohead1 = create_LinklistWithoutHead(10);
+  auto nohead1 = create_LinklistWithoutHead(6);
   print_List(nohead1);
 
-  auto nohead2 = create_LinklistWithoutHead(10);
-  print_List(nohead2);
+  // auto nohead2 = create_LinklistWithoutHead(10);
+  // print_List(nohead2);
 
   // auto odd = new node(-1);
   // auto even = new node(-1);
@@ -242,9 +273,10 @@ int main() {
   //   sort_List(nohead);
   // split_List_reverse(nohead, odd, even);
   // delete_Repeat(nohead);
-  auto result = merge_TList_Reverse(nohead1, nohead2);
-  print_List(result);
-  // print_List(nohead);
+  // auto result = merge_TList_Reverse(nohead1, nohead2);
+  // print_List(result);
+delete_repeat_remainLast(nohead1);
+  print_List(nohead1);
   // print_List(odd->next);
   // print_List(even->next);
 }
