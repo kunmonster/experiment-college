@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "*.vue": "vue",
     "*.html": "html",
     "*.js": "javascript",
     "*.cjson": "jsonc",
@@ -37,6 +38,8 @@
     "iosfwd": "cpp",
     "limits": "cpp",
     "sstream": "cpp",
-    "new": "cpp"
+    "new": "cpp",
+    "complex": "c",
+    "random": "c"
   }
 }
