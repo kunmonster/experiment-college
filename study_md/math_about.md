@@ -46,4 +46,33 @@
 
 #### 埃式筛
 
-1. 原理: 
+1. 原理
+	- 在筛选指定范围内的素数的时候,如果我们直接挨个遍历判断,肯定效率低下,但是我们可以使用标记的方法,在遍历的时候,遍历出当前数的倍数,那么其一定是合数,就可以快速把合数筛选出
+2. 步骤
+   - 维护一个状态数组,isnprime[] , isnprime[i] 如果为0表示i为素数,为1表示i为合数,初始化数组所有元素为0,0,1初始化为合数
+ -  开始遍历,遍历范围的平方根的前半部分就行了,
+
+1. 代码实现
+
+```C
+void ei_sift(int n) {
+  // 状态数组,1表示合数,0表示素数,初始化为素数
+  int *isnprime = (int *)malloc(sizeof(int) * n);
+  memset(isnprime, 0, sizeof(int) * n);
+  // 0,1不是素数
+  isnprime[0] = isnprime[1] = 1;
+  for (int i = 2; i <= sqrt(n); ++i) {
+    if (isnprime[i] == 0) {
+      for (int j = i * i; j < n; j += i) {
+        isnprime[j] = 1;
+      }
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    if (isnprime[i] == 0) printf("%d ", i);
+  }
+  free(isnprime);
+  return;
+}
+
+```
