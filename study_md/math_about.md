@@ -52,7 +52,7 @@
    - 维护一个状态数组,isnprime[] , isnprime[i] 如果为0表示i为素数,为1表示i为合数,初始化数组所有元素为0,0,1初始化为合数
  -  开始遍历,遍历范围的平方根的前半部分就行了,
 
-1. 代码实现
+3. 代码实现
 
 ```C
 void ei_sift(int n) {
@@ -61,6 +61,7 @@ void ei_sift(int n) {
   memset(isnprime, 0, sizeof(int) * n);
   // 0,1不是素数
   isnprime[0] = isnprime[1] = 1;
+  //这里由于i为n的算术平方根时,后面标记就已经是n了,所以不用再标记了
   for (int i = 2; i <= sqrt(n); ++i) {
     if (isnprime[i] == 0) {
       for (int j = i * i; j < n; j += i) {
@@ -75,4 +76,43 @@ void ei_sift(int n) {
   return;
 }
 
+```
+
+#### 欧拉筛
+
+1. 原理
+  - 考察埃式筛,会发现,筛选的合数的时候会有很多重复的筛选,比如8会被2筛选,会被4筛选,欧拉筛规定,每个合数必须由其最小的素因子筛选出来,这样就不会产生重复
+
+2. 步骤
+  - 维护一个素数数组prime,存放素数,初始的时候用0表示为素数,1表示合数,prime[0]存放素数的个数
+  - 维护一个索引变量i,从2开始遍历,若当前数是素数,那么将其加入素数数组,并开始筛选合数,i不变,素数数组滑动,素数的i背,注意要是i本身就是合数,为了保持合数必须由其最小素因子筛选出的特性,当本身是合数时,最小素因子乘了过后直接跳出
+
+3. 代码
+
+```C
+void oula_sift(int n) {
+  // 素数状态集合,0表示素数
+  int *prime = (int *)malloc(sizeof(int) * (n + 1));
+  // 初始化全部标记为素数
+  // memset是按字节赋值的,最好赋值成0
+  memset(prime, 0, sizeof(int) * (n + 1));
+  // 用prime[0]存当前素数的个数
+  for (int i = 2; i <= n; i++) {
+    // 当前数是素数,加入素数集合,如果不是素数下面直接遍历
+    if (prime[i] == 0) prime[++prime[0]] = i;
+
+    // 遍历素数集合
+    for (int j = 1; j <= prime[0] && prime[j] * i <= n; ++j) {
+      // 选合数
+      prime[prime[j] * i] = 1;
+      // 当i本身是合数,时候,只筛最小素数和其的乘积就行了,不然会出现重复筛选
+      if (i % prime[j] == 0) break;
+    }
+  }
+  printf("%d以内的素数有%d个:", n, prime[0]);
+  for (int i = 1; i <= prime[0]; i++) {
+    printf("%d ", prime[i]);
+  }
+  free(prime);
+}
 ```

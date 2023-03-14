@@ -40,6 +40,8 @@
     "sstream": "cpp",
     "new": "cpp",
     "complex": "c",
-    "random": "c"
+    "random": "c",
+    "cstring": "c",
+    "typeinfo": "c"
   }
 }
